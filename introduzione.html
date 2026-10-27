@@ -59,7 +59,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cy);outline-offset:
 /* ---- scena ---- */
 #stage{position:fixed;inset:0;z-index:5;display:none;cursor:pointer}
 #stage.on{display:block}
-.slot{position:fixed;bottom:0;z-index:10;height:min(80svh,760px);width:min(44vw,520px);display:flex;align-items:flex-end;justify-content:center;pointer-events:none;opacity:0;transform:translateY(24px);transition:opacity .25s,transform .25s,filter .25s}
+/* grandezza dei personaggi: cambia questi due valori per ingrandirli o rimpicciolirli */
+:root{--cast-h:min(94svh,1100px);--cast-w:min(60vw,780px)}
+.slot{position:fixed;bottom:0;z-index:10;height:var(--cast-h);width:var(--cast-w);display:flex;align-items:flex-end;justify-content:center;pointer-events:none;opacity:0;transform:translateY(24px);transition:opacity .25s,transform .25s,filter .25s}
 .slot.l{left:2vw}.slot.r{right:2vw}
 .slot.show{opacity:1;transform:none}
 .slot.show.dim{opacity:.55;filter:brightness(.4) grayscale(.6)}
@@ -110,8 +112,8 @@ body.dark #dark{display:block}
 @keyframes zoom{from{transform:scale(.4)}to{transform:scale(1.3)}}
 
 @media (max-width:700px){
-  .slot{width:70vw;height:64svh}
-  .slot.l{left:-10vw}.slot.r{right:-10vw}
+  :root{--cast-h:80svh;--cast-w:100vw}
+  .slot.l{left:-18vw}.slot.r{right:-18vw}
   #box{padding:24px 18px 22px;min-height:8.6em}
   .osd.tc{display:none}
 }
