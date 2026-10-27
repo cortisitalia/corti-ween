@@ -1,1 +1,619 @@
-bananaw
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CORTIS: Introduzione</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040605;--fg:#cfe6da;--dim:#6d887c;--red:#c4121c;--cy:#19e6ff;--mg:#ff2a6d;color-scheme:dark}
+*{box-sizing:border-box}
+html{margin:0;background:var(--bg);color:var(--fg);min-height:100%}
+body{margin:0;background:transparent;color:var(--fg);min-height:100svh;font-family:"Special Elite","Courier New",monospace;font-size:1.1rem;line-height:1.55;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none}
+body.shake{animation:shake .08s steps(2) 8}
+@keyframes shake{0%{transform:translate(6px,-4px)}100%{transform:translate(-6px,5px)}}
+
+/* ---- effetto TV rotta (stesso della home) ---- */
+#noise{position:fixed;inset:0;width:100%;height:100%;z-index:60;pointer-events:none;opacity:.09;image-rendering:pixelated;mix-blend-mode:screen;transition:opacity .15s}
+body.static #noise{opacity:.95}
+.scan{position:fixed;inset:0;z-index:61;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.35) 0 1px,transparent 1px 3px)}
+.vig{position:fixed;inset:0;z-index:62;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.85) 100%)}
+.roll{position:fixed;left:0;right:0;height:18vh;z-index:63;pointer-events:none;background:linear-gradient(transparent,rgba(180,255,220,.07),transparent);animation:roll 7s linear infinite}
+@keyframes roll{from{top:-20vh}to{top:105vh}}
+#stage,#gate{animation:flick 5s infinite steps(1)}
+@keyframes flick{0%,92%,96%,100%{opacity:1}93%{opacity:.82}94%{opacity:1;transform:translateX(3px)}95%{opacity:.7;transform:none}}
+
+/* ---- video di sfondo ---- */
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-2;background:#000;overflow:hidden;filter:saturate(.55) contrast(1.15) brightness(.8);animation:vflick 6s infinite steps(1)}
+.bgl{position:absolute;inset:-2%;background-size:cover;background-position:center 45%;background-repeat:no-repeat;opacity:0;transition:opacity .5s;animation:drift 24s ease-in-out infinite alternate}
+.bgl.on{opacity:1}
+@keyframes drift{from{transform:scale(1) translate(0,0)}to{transform:scale(1.06) translate(-1%,-1%)}}
+@media (orientation:portrait){.bgl{background-position:center 50%}}
+@keyframes vflick{0%,89%,94%,100%{filter:saturate(.55) contrast(1.15) brightness(.8)}90%{filter:saturate(.1) contrast(1.7) brightness(1.4) hue-rotate(40deg)}92%{filter:saturate(1.4) contrast(1.3) brightness(.5) hue-rotate(-30deg)}}
+.bgdim{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.62))}
+
+/* ---- OSD ---- */
+.osd{position:fixed;z-index:64;font-family:"VT323",monospace;font-size:1.5rem;color:#e9fff4;text-shadow:2px 0 var(--mg),-2px 0 var(--cy);pointer-events:none;letter-spacing:.05em}
+.osd.tl{top:calc(env(safe-area-inset-top,0px) + 14px);left:18px}
+.osd.tr{top:calc(env(safe-area-inset-top,0px) + 14px);right:18px}
+.osd.tc{top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);font-size:1.2rem;color:#7dffb0;text-shadow:0 0 8px #7dffb0;white-space:nowrap}
+.rec::before{content:"";display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--red);margin-right:.45em;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+#ch{position:fixed;z-index:64;top:42%;left:0;right:0;text-align:center;font-family:"VT323",monospace;font-size:3rem;color:#7dffb0;text-shadow:0 0 8px #7dffb0;opacity:0;pointer-events:none}
+body.static #ch{opacity:1}
+#prog{position:fixed;z-index:66;top:0;left:0;height:3px;width:0;background:var(--red);box-shadow:0 0 8px var(--red);transition:width .25s}
+#ctl{position:fixed;z-index:66;top:calc(env(safe-area-inset-top,0px) + 46px);right:14px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+#ctl button,#ctl a{background:rgba(0,0,0,.45);border:1px solid var(--dim);color:var(--fg);font:inherit;font-size:.82rem;padding:3px 9px;cursor:pointer;text-decoration:none}
+#ctl button:hover,#ctl a:hover{border-color:var(--fg)}
+#toast{position:fixed;z-index:66;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);left:18px;font-family:"VT323",monospace;font-size:1.4rem;text-shadow:2px 0 var(--mg),-2px 0 var(--cy);display:none;pointer-events:none}
+
+/* ---- gate ---- */
+#gate{position:fixed;inset:0;z-index:70;background:#000;display:grid;place-items:center;text-align:center;padding:24px}
+#gate h2,#end h2{font-family:"VT323",monospace;font-weight:400;font-size:clamp(3rem,14vw,6rem);margin:0;color:#dfe;letter-spacing:.1em;text-shadow:3px 0 var(--mg),-3px 0 var(--cy);line-height:1}
+#gate p,#end p{max-width:36ch;margin:16px auto 28px;color:var(--dim)}
+.btn{font:inherit;background:transparent;color:var(--fg);border:2px solid var(--fg);padding:14px 28px;font-size:1.15rem;cursor:pointer;letter-spacing:.06em;transition:.15s;margin:4px}
+.btn:hover,.btn:focus-visible{background:var(--red);border-color:var(--red);color:#fff;outline:none;box-shadow:0 0 28px var(--red)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+.btn.ghost{border-color:var(--dim);color:var(--dim);font-size:1rem;padding:10px 20px}
+
+/* ---- scena ---- */
+#stage{position:fixed;inset:0;z-index:5;display:none;cursor:pointer}
+#stage.on{display:block}
+.slot{position:fixed;bottom:0;z-index:10;height:min(80svh,760px);width:min(44vw,520px);display:flex;align-items:flex-end;justify-content:center;pointer-events:none;opacity:0;transform:translateY(24px);transition:opacity .25s,transform .25s,filter .25s}
+.slot.l{left:2vw}.slot.r{right:2vw}
+.slot.show{opacity:1;transform:none}
+.slot.show.dim{opacity:.55;filter:brightness(.4) grayscale(.6)}
+.slot.show.focus{opacity:.9;filter:brightness(.7)}
+.slot.show.talk{animation:pop .3s steps(3)}
+@keyframes pop{0%{filter:invert(1) contrast(3)}100%{filter:none}}
+.slot img,.slot svg{max-width:100%;max-height:100%;object-fit:contain;object-position:bottom;display:block;filter:drop-shadow(0 0 18px rgba(0,0,0,.8))}
+.slot svg{height:100%;width:100%}
+
+#dark{position:fixed;inset:0;z-index:20;pointer-events:none;display:none;background:radial-gradient(circle 26vmax at var(--x,50%) var(--y,40%),rgba(0,0,0,0) 0,rgba(0,0,0,.4) 40%,rgba(0,0,0,.94) 100%)}
+body.dark #dark{display:block}
+#blk{position:fixed;inset:0;z-index:28;background:#000;opacity:0;pointer-events:none}
+#blk.on{animation:blk 1s steps(1) forwards}
+@keyframes blk{0%{opacity:1}30%{opacity:0}40%{opacity:1}60%{opacity:.6}75%{opacity:1}100%{opacity:0}}
+#flash{position:fixed;inset:0;z-index:90;background:#dfe;opacity:0;pointer-events:none;transition:opacity .4s}
+
+#card{position:fixed;inset:0;z-index:25;display:none;place-items:center;text-align:center;background:rgba(0,0,0,.72);padding:24px}
+#card.on{display:grid}
+#card .ct{font-family:"VT323",monospace;font-size:clamp(3.5rem,16vw,8rem);line-height:1;letter-spacing:.08em;color:#e8fff2;text-shadow:3px 0 var(--mg),-3px 0 var(--cy)}
+#card .cs{font-family:"VT323",monospace;font-size:clamp(1.4rem,5vw,2.2rem);color:var(--red);letter-spacing:.1em;margin-top:10px;text-shadow:0 0 12px rgba(196,18,28,.6)}
+#card .ct{animation:cin .5s steps(4)}
+@keyframes cin{0%{opacity:0;transform:translateX(-12px)}50%{opacity:1;transform:translateX(8px)}100%{transform:none}}
+
+#box{position:fixed;z-index:30;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:min(920px,calc(100% - 24px));min-height:9.2em;padding:26px 24px 26px;background:rgba(2,6,5,.84);border:2px solid #1d2c26;border-top-color:#2f4a3e;box-shadow:0 0 30px #000;text-shadow:0 1px 6px #000}
+#box.hide{display:none}
+#name{position:absolute;top:-20px;left:16px;font-family:"VT323",monospace;font-size:1.75rem;line-height:1.3;padding:0 16px;background:#000;border:2px solid var(--red);color:#fff;letter-spacing:.1em;text-shadow:2px 0 var(--mg),-2px 0 var(--cy)}
+#name:empty{display:none}
+#txt{margin:0;color:#fff;font-size:clamp(1.05rem,3.6vw,1.3rem);min-height:3.1em}
+#box.n #txt{color:#b9d3c7}
+#box.tu #txt{color:#a8ecff}
+#box.voce{border-color:var(--red)}
+#box.voce #txt{color:#ff7078;text-shadow:2px 0 var(--mg),-2px 0 var(--cy),0 0 12px rgba(196,18,28,.7);animation:vj .2s steps(2) infinite}
+#box.voce #name{background:var(--red)}
+@keyframes vj{0%{transform:translateX(0)}50%{transform:translateX(1.5px)}}
+#arrow{position:absolute;right:14px;bottom:6px;color:var(--red);font-family:"VT323",monospace;font-size:1.6rem;visibility:hidden;animation:blink 1s steps(1) infinite}
+#arrow.on{visibility:visible}
+
+/* ---- finale ---- */
+#end{position:fixed;inset:0;z-index:75;background:rgba(0,0,0,.94);display:none;place-items:center;text-align:center;padding:24px}
+#end.on{display:grid}
+#end h2{color:#ff7078}
+
+/* ---- jumpscare finale ---- */
+#scare{position:fixed;inset:0;z-index:100;background:#000;display:none;overflow:hidden}
+#scare.on{display:block;animation:jsf .1s steps(2) 7}
+@keyframes jsf{0%{background:#000}100%{background:#7a0008}}
+#scare svg{width:100%;height:100%;display:block;animation:zoom .8s cubic-bezier(.2,.9,.1,1) forwards}
+@keyframes zoom{from{transform:scale(.4)}to{transform:scale(1.3)}}
+
+@media (max-width:700px){
+  .slot{width:70vw;height:64svh}
+  .slot.l{left:-10vw}.slot.r{right:-10vw}
+  #box{padding:24px 18px 22px;min-height:8.6em}
+  .osd.tc{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .roll{display:none}
+  body.static #noise{opacity:.3}
+}
+</style>
+</head>
+<body>
+
+<div id="bg" aria-hidden="true"><div class="bgl" id="bgA"></div><div class="bgl" id="bgB"></div></div>
+<div class="bgdim" aria-hidden="true"></div>
+<canvas id="noise" aria-hidden="true"></canvas>
+<div class="scan" aria-hidden="true"></div>
+<div class="vig" aria-hidden="true"></div>
+<div class="roll" aria-hidden="true"></div>
+<div id="ch" aria-hidden="true">CH 05</div>
+<div id="prog" aria-hidden="true"></div>
+
+<section id="gate">
+  <div>
+    <h2>NO SIGNAL</h2>
+    <p>Contiene luci lampeggianti, rumori forti e jumpscare. Meglio al buio e con le cuffie. Clicca, tocca o premi spazio per far andare avanti il dialogo.</p>
+    <button class="btn" id="start">Avvia la registrazione</button>
+  </div>
+</section>
+
+<div id="stage" aria-live="polite">
+  <div class="slot l" id="sl"></div>
+  <div class="slot r" id="sr"></div>
+  <div id="dark"></div>
+  <div id="blk"></div>
+  <div id="card"><div><div class="ct" id="ct"></div><div class="cs" id="cs"></div></div></div>
+  <div id="box"><div id="name"></div><p id="txt"></p><span id="arrow">▼</span></div>
+</div>
+
+<div class="osd tl rec" id="cam" style="display:none">REC VILLA_CAM_01</div>
+<div class="osd tr" id="clock" style="display:none">23:47</div>
+<div id="toast"></div>
+<div id="ctl" style="display:none">
+  <a href="#" id="home">esci</a>
+  <button id="back">‹ indietro</button>
+  <button id="skip">salta ››</button>
+  <button id="mute" aria-label="Attiva o disattiva l'audio">audio: on</button>
+</div>
+
+<div id="end">
+  <div>
+    <h2>FINE REGISTRAZIONE</h2>
+    <p>Alle 00:00 la casa ha chiuso le porte. Ora tocca a te trovare l'uscita.</p>
+    <button class="btn" id="go">Entra nella villa</button><br>
+    <button class="btn ghost" id="again">Rivedi dall'inizio</button>
+  </div>
+</div>
+
+<div id="flash"></div>
+<div id="scare" aria-hidden="true"></div>
+
+<script>
+/* ====== DA PERSONALIZZARE ===== */
+const HOME_URL = "index.html";   // pagina principale del sito (link "esci")
+const START_URL = "";            // pagina dell'Episodio 1, es. "episodio-1.html"; vuoto = messaggio "non ancora trasmesso"
+/* Sfondi per luogo (si adattano a PC e telefono con ritaglio automatico) */
+const BG = {
+  van:      "https://i.pinimg.com/736x/fe/69/24/fe692464524007913ed4e23210653048.jpg",
+  cancello: "https://i.pinimg.com/736x/e8/76/74/e8767414a2a6b6e5aeae74ba878cf389.jpg",
+  vialetto: "https://i.pinimg.com/736x/ef/6d/ba/ef6dba8c39d485f153509c6662a215d7.jpg",
+  ingresso: "https://i.pinimg.com/736x/cd/98/5a/cd985a371675930a127dc14c1588b16c.jpg",
+  salotto:  "https://i.pinimg.com/736x/6e/95/26/6e9526c4d976b37d1ca02422899ebc97.jpg"
+};
+/* Quando cambia il luogo: inizia alla battuta che contiene questo testo */
+const SCENES = [
+  ["van",      "La pioggia batteva"],
+  ["cancello", "Quando il veicolo si fermò"],
+  ["vialetto", "Entraste nella villa alle 23:52"],
+  ["ingresso", "L'odore di legno umido"],
+  ["salotto",  "Lungo le pareti erano appese"]
+];
+/* Foto dei personaggi: PNG senza sfondo. side = lato dello schermo in cui appaiono.
+   Se un file manca compare una sagoma con l'iniziale. */
+const CAST = {
+  martin:    {name:"Martin",     img:"personaggi/martin.png",     side:"l", pitch:220},
+  james:     {name:"James",      img:"personaggi/james.png",      side:"r", pitch:260},
+  juhoon:    {name:"Juhoon",     img:"personaggi/juhoon.png",     side:"l", pitch:180},
+  seonghyeon:{name:"Seonghyeon", img:"personaggi/seonghyeon.png", side:"r", pitch:300},
+  keonho:    {name:"Keonho",     img:"personaggi/keonho.png",     side:"l", pitch:200}
+};
+/* =============================== */
+
+/* ====== LA STORIA ====== */
+const n=(t,fx)=>({w:"n",t,fx}), s=(w,t,fx)=>({w,t,fx}), card=(time,sub,clock)=>({card:1,time,sub,clock:clock||time});
+const S=[
+card("23:47","Davanti al cancello"),
+n("La pioggia batteva contro i finestrini del van da quasi due ore."),
+n("Quando il veicolo si fermò davanti al cancello, Martin fu il primo a scendere, stringendosi nella giacca.","thunder"),
+s("martin","«Okay, devo ammetterlo. Per un contenuto speciale, questa location è incredibilmente inquietante.»"),
+n("James sollevò il telefono per riprendere il cancello arrugginito."),
+s("james","«Immaginate se ci fosse davvero un fantasma.»"),
+s("juhoon","«Non dirlo neanche per scherzo.»"),
+n("Juhoon recuperò gli zaini dal bagagliaio."),
+n("Seonghyeon, invece, non stava guardando la villa. Osservava il cancello alle loro spalle."),
+s("seonghyeon","«Era aperto quando siamo arrivati?»"),
+n("Nessuno gli rispose."),
+n("Tu scendesti per ultima, controllando l'attrezzatura e la lista delle riprese. Il programma prevedeva una notte nella villa, alcune sfide notturne e una registrazione finale all'alba."),
+n("Una cosa semplice."),
+n("Almeno, così ti avevano detto."),
+s("tu","«Ci siamo tutti?»"),
+n("Facesti l'appello. Martin alzò una mano."),
+s("martin","«Presente.»"),
+s("tu","«James?»"),
+s("james","«Qui.»"),
+s("tu","«Seonghyeon?»"),
+s("seonghyeon","«Sì.»"),
+s("tu","«Juhoon?»"),
+s("juhoon","«Presente.»"),
+s("tu","«Keonho?»"),
+s("keonho","«Sì.»"),
+n("Tu controllasti la lista."),
+n("Cinque membri."),
+n("Tu, come staff."),
+n("Sei persone in totale."),
+card("23:52","Dentro la villa"),
+n("Entraste nella villa alle 23:52."),
+n("L'odore di legno umido e polvere ti colpì immediatamente. Il salone era enorme, illuminato da un lampadario che oscillava leggermente, nonostante tutte le finestre fossero chiuse."),
+n("Lungo le pareti erano appese decine di fotografie."),
+n("O meglio, erano appese al contrario."),
+n("Tutte girate verso il muro."),
+s("seonghyeon","«Che strano.»"),
+n("James si avvicinò a una di esse."),
+s("james","«Magari faceva parte dell'arredamento originale.»"),
+s("martin","«Oppure qualcuno non voleva essere guardato.»"),
+n("Nessuno rise."),
+n("Tu controllasti la videocamera. La batteria era carica, ma sul display compariva una piccola icona rossa che non avevi mai visto prima."),
+n("REC.","rec"),
+n("La videocamera stava registrando."),
+s("tu","«Ragazzi, chi ha acceso questa?»"),
+s("juhoon","«Cosa?»"),
+n("Mostrasti loro lo schermo."),
+n("La registrazione durava già da sette minuti."),
+n("Eppure, eri sicura di averla controllata nel van."),
+s("juhoon","«Sarà un errore tecnico.»"),
+n("Juhoon prese la videocamera per esaminare il display."),
+n("Poi la videocamera emise un breve suono. La registrazione si interruppe.","beep"),
+n("Sul piccolo schermo comparve un'immagine del salone ripreso dall'alto."),
+n("Tutti e sei eravate davanti all'ingresso."),
+n("Ma dietro di voi c'era qualcun altro."),
+n("Una figura alta, immobile, con il volto coperto dall'ombra.","static"),
+n("Ti girasti di scatto."),
+n("Non c'era nessuno."),
+s("tu","«Ditemi che l'avete visto anche voi.»"),
+n("Keonho non rispose. Si era fermato davanti alle scale."),
+n("Fissava il piano superiore."),
+s("keonho","«Ragazzi…»"),
+n("La sua voce era talmente bassa che quasi non la sentisti."),
+s("keonho","«Noi siamo entrati in sei, vero?»"),
+s("martin","«Sì. Perché?»"),
+n("Keonho indicò il pavimento."),
+n("Sei persone erano entrate nella villa."),
+n("Ma sul pavimento impolverato si vedevano sette serie di impronte bagnate."),
+n("Una di esse terminava davanti alle scale."),
+n("Come se qualcuno fosse entrato insieme a voi e poi fosse salito al piano superiore."),
+n("Senza che nessuno se ne accorgesse."),
+n("In quel momento, dall'alto arrivò un rumore.","steps"),
+n("Passi."),
+n("Rapidi."),
+n("Qualcuno stava correndo lungo il corridoio del piano superiore."),
+s("james","«Ehi! C'è qualcuno?»"),
+n("I passi si fermarono."),
+n("Un secondo di silenzio."),
+n("Poi ricominciarono."),
+n("Questa volta, correvano verso le scale.","steps"),
+s("juhoon","«Indietro.»"),
+n("Juhoon si mise davanti a te."),
+n("Ma nessuno si mosse abbastanza in fretta."),
+n("I passi arrivarono fino al bordo della scalinata."),
+n("E si fermarono."),
+n("Non c'era nessuno."),
+n("Soltanto una porta socchiusa al piano superiore, che prima non avevi notato."),
+n("Martin deglutì."),
+s("martin","«Okay. Basta scherzi. Chiunque sia, può uscire.»"),
+n("La porta si aprì lentamente."),
+n("Dietro non c'era che buio."),
+n("Poi tutte le luci della villa si spensero.","blackout"),
+card("23:59","Il minuto prima"),
+s("juhoon","«Nessuno si muova!»"),
+n("Il rumore della pioggia sembrava essere scomparso."),
+n("Accendesti la torcia del telefono. Martin fece lo stesso, seguito dagli altri."),
+n("Cinque fasci di luce attraversarono il salone."),
+n("Il tuo telefono, invece, non si accendeva più."),
+n("Lo schermo era completamente nero."),
+s("tu","«Non funziona.»"),
+s("james","«Neanche il mio.»"),
+n("Un clic metallico risuonò alle vostre spalle.","clicks"),
+n("Poi un altro."),
+n("E un altro ancora."),
+n("Come serrature che si chiudevano una dopo l'altra."),
+n("Juhoon corse verso l'ingresso e abbassò la maniglia."),
+n("La porta non si mosse."),
+s("juhoon","«È bloccata.»"),
+n("Martin lo raggiunse e provò ad aiutarlo."),
+n("Niente."),
+n("James si avvicinò a una finestra, ma le imposte non si aprivano."),
+n("Seonghyeon guardò l'orologio al polso."),
+s("seonghyeon","«Ragazzi… manca un minuto a mezzanotte.»"),
+s("martin","«E quindi?»"),
+n("Seonghyeon indicò il vecchio orologio sopra il camino."),
+n("Le lancette segnavano le 23:59."),
+n("Il pendolo era fermo."),
+n("Ma il ticchettio continuava.","tick"),
+n("Un colpo."),
+n("Due."),
+n("Tre."),
+n("Poi il telefono fisso sul tavolino cominciò a squillare.","ring"),
+n("Una volta."),
+n("Due volte."),
+n("Tre volte."),
+n("Era un apparecchio antico, beige, coperto di polvere. Il cavo era tagliato."),
+n("Non avrebbe dovuto funzionare."),
+n("Nessuno si avvicinò."),
+n("Al quarto squillo, una voce gracchiante uscì dall'altoparlante della cornetta."),
+s("voce","«Martin…»"),
+n("Lui impallidì."),
+n("La voce ripeté il suo nome."),
+s("voce","«Martin, sali. Ti sto aspettando.»"),
+n("James gli afferrò il braccio."),
+s("james","«Non andare.»"),
+s("martin","«Non ho intenzione di andare da nessuna parte.»"),
+n("Ma la sua voce tremava."),
+n("Poi l'orologio batté la mezzanotte.","chime"),
+card("00:00","Mezzanotte"),
+n("Le porte si chiusero contemporaneamente."),
+n("Le finestre si oscurarono."),
+n("E una voce profonda, proveniente dagli altoparlanti nascosti nelle pareti, riempì il salone."),
+s("voce","«Benvenuti a casa.»"),
+n("Keonho indietreggiò."),
+s("keonho","«No. No, no…»"),
+s("voce","«La vostra permanenza è iniziata.»"),
+n("Un rumore di interferenza attraversò gli altoparlanti.","static"),
+n("Poi arrivò la frase che nessuno di voi avrebbe mai dimenticato."),
+s("voce","«Potete uscire tutti.»"),
+n("Una pausa."),
+s("voce","«Ma la casa deve tenere qualcuno.»"),
+n("Il lampadario si accese improvvisamente.","lights"),
+n("E la porta d'ingresso non c'era più."),
+n("Al suo posto si trovava una parete coperta di fotografie."),
+n("Le stesse fotografie del salone."),
+n("Questa volta, però, erano rivolte verso l'esterno."),
+n("Potevate vedere i volti nelle immagini."),
+n("Volti pallidi. Occhi spalancati."),
+n("Persone che sembravano fissarvi da un passato lontanissimo."),
+n("E in una delle fotografie c'eravate voi."),
+n("Tu, Martin, James, Seonghyeon, Juhoon e Keonho."),
+n("Vestiti esattamente come quella sera."),
+n("La data incisa sulla cornice era:"),
+card("27 OTTOBRE 1999","","27.10.99"),
+s("tu","«Non è possibile.»"),
+s("martin","«Questa foto è stata scattata prima ancora che noi…»"),
+n("Non terminò la frase."),
+n("Perché dietro di voi, nella fotografia, c'era la stessa figura scura ripresa dalla videocamera."),
+n("E questa volta aveva un volto."),
+n("Il tuo.","scare")
+];
+const iR=S.findIndex(l=>l.fx==="rec"), iB=S.findIndex(l=>l.fx==="blackout"), iL=S.findIndex(l=>l.fx==="lights");
+
+const $=s=>document.querySelector(s);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* --- rumore tv --- */
+const cv=$('#noise'),cx=cv.getContext('2d');cv.width=200;cv.height=120;
+const im=cx.createImageData(200,120);
+let last=0;
+(function loop(t){
+  if(t-last>70){const d=im.data;for(let i=0;i<d.length;i+=4){d[i]=d[i+1]=d[i+2]=Math.random()*255;d[i+3]=255}cx.putImageData(im,0,0);last=t}
+  requestAnimationFrame(loop);
+})(0);
+
+/* --- audio sintetizzato --- */
+let ac,master,rainG,muted=false;
+function initAudio(){
+  try{
+    ac=new(window.AudioContext||window.webkitAudioContext)();
+    master=ac.createGain();master.gain.value=.8;master.connect(ac.destination);
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.type='sawtooth';o.frequency.value=47;g.gain.value=.012;o.connect(g);g.connect(master);o.start();
+    /* pioggia */
+    const len=ac.sampleRate*2,b=ac.createBuffer(1,len,ac.sampleRate),a=b.getChannelData(0);
+    for(let i=0;i<len;i++)a[i]=Math.random()*2-1;
+    const src=ac.createBufferSource();src.buffer=b;src.loop=true;
+    const hp=ac.createBiquadFilter();hp.type='highpass';hp.frequency.value=900;
+    const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=6500;
+    rainG=ac.createGain();rainG.gain.value=.07;
+    src.connect(hp);hp.connect(lp);lp.connect(rainG);rainG.connect(master);src.start();
+  }catch(e){}
+}
+function setRain(on){if(rainG)rainG.gain.setTargetAtTime(on?.07:0,ac.currentTime,.3)}
+function burst(d,v,lpf,t0){
+  if(!ac)return;
+  const n=ac.sampleRate*d,b=ac.createBuffer(1,n,ac.sampleRate),a=b.getChannelData(0);
+  for(let i=0;i<n;i++)a[i]=Math.random()*2-1;
+  const s=ac.createBufferSource(),g=ac.createGain(),t=ac.currentTime+(t0||0);
+  s.buffer=b;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);
+  let node=s;
+  if(lpf){const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=lpf;s.connect(f);node=f}
+  node.connect(g);g.connect(master);s.start(t);
+}
+function tone(wave,f0,f1,t0,dur,vol){
+  if(!ac)return;
+  const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+t0;
+  o.type=wave;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);
+  o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.05);
+}
+function scream(){
+  if(!ac)return;
+  burst(.9,1);
+  [90,133,201].forEach((f,i)=>tone('sawtooth',f,f*5,0,.8,.35-i*.08));
+}
+$('#mute').onclick=e=>{muted=!muted;if(master)master.gain.value=muted?0:.8;e.target.textContent='audio: '+(muted?'off':'on')};
+
+/* --- effetti --- */
+function flash(a){const f=$('#flash');f.style.transition='none';f.style.opacity=a;requestAnimationFrame(()=>requestAnimationFrame(()=>{f.style.transition='opacity .4s';f.style.opacity=0}))}
+function staticBlip(){document.body.classList.add('static');burst(.4,.3);setTimeout(()=>document.body.classList.remove('static'),350)}
+const FACE=`<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"><rect width="200" height="200" fill="#000"/>
+<path d="M30 200C30 120 50 30 100 30s70 90 70 170z" fill="#0b0b0b"/>
+<ellipse cx="100" cy="100" rx="46" ry="62" fill="#d7ddd5"/>
+<ellipse cx="80" cy="88" rx="13" ry="20" fill="#000"/><ellipse cx="120" cy="88" rx="13" ry="20" fill="#000"/>
+<circle cx="80" cy="92" r="2.5" fill="#fff"/><circle cx="120" cy="92" r="2.5" fill="#fff"/>
+<path d="M100 98l-4 20h8z" fill="#9aa39b"/>
+<ellipse cx="100" cy="146" rx="19" ry="26" fill="#000"/></svg>`;
+const FX={
+  thunder(){flash(.85);burst(1.8,.7,300)},
+  beep(){tone('square',1500,1500,0,.15,.2)},
+  rec(){tone('square',1500,1500,0,.12,.2);tone('square',1500,1500,.2,.12,.2)},
+  static(){staticBlip()},
+  steps(){for(let i=0;i<9;i++)tone('sine',95,45,i*(.2-i*.012),.1,.8)},
+  blackout(){
+    const b=$('#blk');b.classList.remove('on');void b.offsetWidth;b.classList.add('on');
+    tone('sine',60,20,0,1,.8);burst(.4,.5,400);
+  },
+  clicks(){[0,.35,.8].forEach(t=>{tone('square',1800,700,t,.04,.5);burst(.05,.5,3000,t)})},
+  tick(){[0,.8,1.6].forEach(t=>tone('square',1200,500,t,.03,.35))},
+  ring(){[0,1.3,2.6,3.9].forEach(r=>{for(let k=0;k<9;k++)tone('square',k%2?480:440,k%2?480:440,r+k*.055,.05,.12)})},
+  chime(){for(let i=0;i<6;i++){tone('sine',130,128,i*1.1,1.2,.5);tone('sine',261,258,i*1.1,.9,.2)}},
+  lights(){flash(.5);tone('square',90,60,0,.25,.5);burst(.2,.4,500)},
+  scare(){
+    const el=$('#scare');el.innerHTML=FACE;el.classList.add('on');
+    scream();document.body.classList.add('shake');
+    navigator.vibrate&&navigator.vibrate([200,80,300]);
+    setTimeout(()=>{el.classList.remove('on');el.innerHTML='';document.body.classList.remove('shake')},950);
+  }
+};
+
+/* --- personaggi --- */
+const sil=c=>`<svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMax meet"><path d="M20 300c0-80 30-110 80-120s80 40 80 120z" fill="#0b0f0e" stroke="#2a3b33" stroke-width="2"/><ellipse cx="100" cy="100" rx="42" ry="54" fill="#101a17" stroke="#2a3b33" stroke-width="2"/><text x="100" y="120" text-anchor="middle" font-family="VT323,monospace" font-size="64" fill="#cfe6da">${c.name[0]}</text></svg>`;
+Object.values(CAST).forEach(c=>{if(c.img)new Image().src=c.img});
+const slots={l:{el:$('#sl'),key:null},r:{el:$('#sr'),key:null}};
+function setSlot(side,key){
+  const sl=slots[side];
+  if(sl.key===key)return;
+  sl.key=key;sl.el.innerHTML='';
+  if(!key){sl.el.classList.remove('show');return}
+  const c=CAST[key];
+  if(c.img){
+    const im=new Image();im.alt=c.name;
+    im.onerror=()=>{sl.el.innerHTML=sil(c)};
+    im.src=c.img;sl.el.appendChild(im);
+  }else sl.el.innerHTML=sil(c);
+  sl.el.classList.remove('show');void sl.el.offsetWidth;sl.el.classList.add('show');
+}
+function stageFor(key,talking){
+  ['l','r'].forEach(side=>{
+    const sl=slots[side];sl.el.classList.remove('dim','focus','talk');
+  });
+  if(key){
+    const side=CAST[key].side;
+    setSlot(side,key);
+    const mine=slots[side].el,other=slots[side==='l'?'r':'l'].el;
+    mine.classList.add(talking?'talk':'focus');
+    if(!talking)mine.classList.add('focus');
+    other.classList.add('dim');
+  }else{
+    ['l','r'].forEach(side=>slots[side].el.classList.add('dim'));
+  }
+}
+function clearStage(){setSlot('l',null);setSlot('r',null)}
+
+/* --- dialogo --- */
+const box=$('#box'),txt=$('#txt'),nameEl=$('#name'),arrow=$('#arrow'),cardEl=$('#card');
+let idx=0,typing=false,timer=null,started=false,ended=false,full='',blipN=0;
+const NAMES={tu:"TU",voce:"VOCE"};
+function finishTyping(){clearTimeout(timer);typing=false;txt.textContent=full;arrow.classList.add('on')}
+function typeText(str,pitch,wave){
+  clearTimeout(timer);full=str;arrow.classList.remove('on');
+  if(reduce||!str){typing=false;txt.textContent=str;arrow.classList.add('on');return}
+  typing=true;let i=0;txt.textContent='';
+  (function t(){
+    i++;txt.textContent=str.slice(0,i);
+    if(pitch&&i%3===0&&str[i-1]!==' ')tone(wave||'square',pitch,pitch*.9,0,.03,.03);
+    if(i<str.length)timer=setTimeout(t,20+Math.random()*28);else{typing=false;arrow.classList.add('on')}
+  })();
+}
+function applyState(i){
+  document.body.classList.toggle('dark',i>=iB&&i<iL);
+  $('#cam').style.display=i>=iR?'block':'none';
+  setRain(i<iB);
+  for(let j=i;j>=0;j--)if(S[j].card){$('#clock').textContent=S[j].clock;break}
+  $('#prog').style.width=(i/(S.length-1)*100)+'%';
+}
+function render(i,fwd){
+  const L=S[i];idx=i;applyState(i);setScene(i);
+  if(L.card){
+    box.classList.add('hide');cardEl.classList.add('on');
+    $('#ct').textContent=L.time;$('#cs').textContent=L.sub;
+    clearStage();clearTimeout(timer);typing=false;
+    if(fwd)staticBlip();
+    return;
+  }
+  cardEl.classList.remove('on');box.classList.remove('hide');
+  box.className=L.w;
+  nameEl.textContent=CAST[L.w]?CAST[L.w].name.toUpperCase():(NAMES[L.w]||'');
+  if(CAST[L.w])stageFor(L.w,true);
+  else if(L.w==='n'){const m=L.t.match(/^(Martin|James|Juhoon|Seonghyeon|Keonho)\b/);stageFor(m?m[1].toLowerCase():null,false)}
+  else stageFor(null);
+  if(fwd){
+    typeText(L.t,CAST[L.w]?CAST[L.w].pitch:(L.w==='tu'?330:L.w==='voce'?70:0),L.w==='voce'?'sawtooth':'square');
+    if(L.fx&&FX[L.fx])FX[L.fx]();
+  }else{
+    clearTimeout(timer);typing=false;full=L.t;txt.textContent=L.t;arrow.classList.add('on');
+  }
+}
+function next(){
+  if(typing){finishTyping();return}
+  if(idx>=S.length-1){showEnd();return}
+  render(idx+1,true);
+}
+function prev(){
+  if(idx<=0)return;
+  render(idx-1,false);
+}
+function showEnd(){
+  ended=true;$('#end').classList.add('on');box.classList.add('hide');
+  $('#prog').style.width='100%';
+}
+function toast(t){const el=$('#toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',3200)}
+
+/* --- controlli --- */
+document.addEventListener('click',e=>{
+  if(!started||ended||e.target.closest('button,a'))return;
+  next();
+});
+document.addEventListener('keydown',e=>{
+  if(!started||ended)return;
+  if(e.key===' '||e.key==='Enter'||e.key==='ArrowRight'){e.preventDefault();next()}
+  else if(e.key==='ArrowLeft'){e.preventDefault();prev()}
+});
+$('#back').onclick=prev;
+$('#skip').onclick=()=>{finishTyping();idx=S.length-1;applyState(idx);showEnd()};
+$('#home').onclick=e=>{e.preventDefault();location.href=HOME_URL};
+$('#again').onclick=()=>{ended=false;$('#end').classList.remove('on');clearStage();render(0,true)};
+$('#go').onclick=()=>{
+  $('#ch').textContent='CH 06';staticBlip();
+  setTimeout(()=>{
+    if(START_URL)location.href=START_URL;
+    else toast('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO');
+  },380);
+};
+/* luce della torcia quando la villa è al buio */
+function moveLight(e){
+  const p=e.touches?e.touches[0]:e;
+  document.documentElement.style.setProperty('--x',p.clientX+'px');
+  document.documentElement.style.setProperty('--y',p.clientY+'px');
+}
+addEventListener('pointermove',moveLight);addEventListener('pointerdown',moveLight);
+
+/* --- sfondi per luogo --- */
+Object.values(BG).forEach(u=>{new Image().src=u});
+const SCENE_AT=SCENES.map(([k,t])=>[k,Math.max(0,S.findIndex(l=>l.t&&l.t.includes(t)))]);
+const bgL=[$('#bgA'),$('#bgB')];let bgCur=null,bgFlip=0;
+function setScene(i){
+  let k=SCENE_AT[0][0];
+  SCENE_AT.forEach(([key,at])=>{if(i>=at)k=key});
+  if(k===bgCur)return;
+  bgCur=k;
+  const incoming=bgL[bgFlip^=1],outgoing=bgL[bgFlip^1];
+  incoming.style.backgroundImage='url("'+BG[k]+'")';
+  incoming.classList.add('on');outgoing.classList.remove('on');
+}
+
+/* --- avvio --- */
+$('#start').onclick=()=>{
+  initAudio();
+  $('#ch').textContent='CH 05';
+  document.body.classList.add('static');burst(.6,.35);
+  setTimeout(()=>{
+    $('#gate').style.display='none';$('#stage').classList.add('on');
+    $('#clock').style.display='block';$('#ctl').style.display='flex';
+    started=true;render(0,true);
+  },380);
+  setTimeout(()=>document.body.classList.remove('static'),650);
+};
+</script>
+</body>
+</html>
