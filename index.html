@@ -166,7 +166,8 @@ footer{margin-top:80px;font-size:.8rem;color:#4b6258;max-width:60ch}
   <h3>Le registrazioni</h3>
   <p class="lead">Cinque episodi. Cinque finali. Uno solo ti lascia uscire.</p>
   <ul class="eps">
-    <li><time>00:00</time><a href="#" id="ep1">Episodio 1 · Il primo passo</a></li>
+    <li><time>23:47</time><a href="introduzione.html" id="intro">Introduzione · La notte comincia</a></li>
+    <li><time>00:00</time><a href="episode1.html" id="ep1">Episodio 1 · Il primo passo</a></li>
     <li class="lock"><time>01:xx</time><span>La casa vi conosce</span></li>
     <li class="lock"><time>00:38</time><span>Non aprire la porta</span></li>
     <li class="lock"><time>03:xx</time><span>Il prezzo della fuga</span></li>
@@ -190,7 +191,7 @@ const JS_IMGS = [   // le 5 foto dei jumpscare (escono in ordine casuale, senza 
   "https://i.pinimg.com/736x/b5/79/9f/b5799f674d092bf71bb16894796b9d65.jpg"
 ];
 const INTRO_URL = "introduzione.html";   // l'introduzione: ci si passa sempre prima degli episodi
-const START_URL = "";   // pagina dell'Episodio 1, es. "episodio-1.html"; vuoto = messaggio "non ancora trasmesso"
+const START_URL = "episode1.html";   // pagina dell'Episodio 1; vuoto = messaggio "non ancora trasmesso"
 const VID_PHONE = "video/horrorphone.mp4", VID_PC = "video/horrorlaptop.mp4";   // video di sfondo: telefono (verticale) e PC (orizzontale)
 const PHOTOS = [
   "https://i.pinimg.com/736x/a2/56/32/a2563232dc2d2960fbab8e2bd815c77e.jpg",
@@ -393,14 +394,19 @@ $('#start').onclick=()=>{
   });
 };
 $('#enter').onclick=()=>{
-  /* prima l'introduzione, poi gli episodi (l'introduzione porta a START_URL) */
+  /* il bottone grande parte dall'introduzione; l'introduzione porta a START_URL */
   channel('CH 04',()=>{
     if(INTRO_URL)location.href=INTRO_URL;
     else if(START_URL)location.href=START_URL;
     else toast('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO');
   });
 };
-$('#ep1').onclick=e=>{e.preventDefault();$('#enter').click()};
+/* nella lista: Introduzione ed Episodio 1 sono due voci separate */
+['#intro','#ep1'].forEach(s=>$(s).onclick=e=>{
+  e.preventDefault();
+  const u=e.currentTarget.href;
+  channel('CH 04',()=>{location.href=u});
+});
 </script>
 </body>
 </html>
