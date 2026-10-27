@@ -189,6 +189,7 @@ const JS_IMGS = [   // le 5 foto dei jumpscare (escono in ordine casuale, senza 
   "https://i.pinimg.com/736x/6b/73/19/6b73190610e23e61ceeabe23ed8a9a25.jpg",
   "https://i.pinimg.com/736x/b5/79/9f/b5799f674d092bf71bb16894796b9d65.jpg"
 ];
+const INTRO_URL = "introduzione.html";   // l'introduzione: ci si passa sempre prima degli episodi
 const START_URL = "";   // pagina dell'Episodio 1, es. "episodio-1.html"; vuoto = messaggio "non ancora trasmesso"
 const VID_LANDSCAPE = "/_blob/4ca7453390e8b7aff9bd6b680dc450f3", VID_PORTRAIT = "/_blob/72341045763534713c7da7a5965a7483";   // video di sfondo: PC (16:9) e telefono (9:16)
 const PHOTOS = [
@@ -366,8 +367,10 @@ $('#start').onclick=()=>{
   });
 };
 $('#enter').onclick=()=>{
+  /* prima l'introduzione, poi gli episodi (l'introduzione porta a START_URL) */
   channel('CH 04',()=>{
-    if(START_URL)location.href=START_URL;
+    if(INTRO_URL)location.href=INTRO_URL;
+    else if(START_URL)location.href=START_URL;
     else toast('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO');
   });
 };
