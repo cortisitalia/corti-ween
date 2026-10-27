@@ -191,7 +191,7 @@ const JS_IMGS = [   // le 5 foto dei jumpscare (escono in ordine casuale, senza 
 ];
 const INTRO_URL = "introduzione.html";   // l'introduzione: ci si passa sempre prima degli episodi
 const START_URL = "";   // pagina dell'Episodio 1, es. "episodio-1.html"; vuoto = messaggio "non ancora trasmesso"
-const VID_LANDSCAPE = "/_blob/4ca7453390e8b7aff9bd6b680dc450f3", VID_PORTRAIT = "/_blob/72341045763534713c7da7a5965a7483";   // video di sfondo: PC (16:9) e telefono (9:16)
+const VID_PHONE = "video/horrorphone.mp4", VID_PC = "video/horrorlaptop.mp4";   // video di sfondo: telefono (verticale) e PC (orizzontale)
 const PHOTOS = [
   "https://i.pinimg.com/736x/a2/56/32/a2563232dc2d2960fbab8e2bd815c77e.jpg",
   "https://i.pinimg.com/1200x/80/7d/2a/807d2ab44b1ba152b4f6e2f48ca295e9.jpg",
@@ -215,9 +215,28 @@ let last=0;
 
 /* --- audio sintetizzato --- */
 let ac,master,muted=false;
+/* --- sblocco audio iPhone/Safari --- */
+function unlockIOS(){
+  try{navigator.audioSession&&(navigator.audioSession.type='playback')}catch(e){}
+  try{
+    /* un audio HTML silenzioso in loop fa passare Safari alla modalità "riproduzione": il tasto silenzioso non zittisce più il resto */
+    const sr=8000,n=sr/2,buf=new ArrayBuffer(44+n),v=new DataView(buf);
+    const w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
+    w(0,'RIFF');v.setUint32(4,36+n,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,'data');v.setUint32(40,n,true);
+    for(let i=0;i<n;i++)v.setUint8(44+i,128);
+    const a=new Audio(URL.createObjectURL(new Blob([buf],{type:'audio/wav'})));
+    a.loop=true;a.setAttribute('playsinline','');a.play().catch(()=>{});
+    window._sil=a;
+  }catch(e){}
+  try{ac.resume&&ac.resume();
+    const b=ac.createBuffer(1,1,22050),s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0)}catch(e){}
+}
+['pointerdown','touchend','click','keydown'].forEach(ev=>addEventListener(ev,()=>{if(ac&&ac.state!=='running')ac.resume()},true));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ac&&ac.state!=='running')ac.resume()});
 function initAudio(){
   try{
     ac=new(window.AudioContext||window.webkitAudioContext)();
+    unlockIOS();
     master=ac.createGain();master.gain.value=.8;master.connect(ac.destination);
     const o=ac.createOscillator(),g=ac.createGain();
     o.type='sawtooth';o.frequency.value=47;g.gain.value=.012;o.connect(g);g.connect(master);o.start();
@@ -348,13 +367,20 @@ setInterval(()=>{
 },17000);
 
 /* --- video di sfondo: carica solo quello adatto allo schermo --- */
-const bg=$('#bg'),mq=matchMedia('(orientation: portrait)');
+const bg=$('#bg'),mq=matchMedia('(orientation: portrait), (max-width: 800px)');
+let bgSrc='';
 function pickBg(){
-  const s=mq.matches?VID_PORTRAIT:VID_LANDSCAPE;
-  if(s&&bg.getAttribute('src')!==s){bg.src=s;bg.play().catch(()=>{})}
+  const s=mq.matches?VID_PHONE:VID_PC;
+  if(s===bgSrc)return;
+  bgSrc=s;
+  bg.innerHTML='';
+  const so=document.createElement('source');so.src=s;so.type='video/mp4';
+  bg.appendChild(so);
+  bg.load();
+  bg.play().catch(()=>{});
 }
 pickBg();
-mq.addEventListener&&mq.addEventListener('change',pickBg);
+mq.addEventListener?mq.addEventListener('change',pickBg):mq.addListener&&mq.addListener(pickBg);
 
 /* --- avvio --- */
 $('#start').onclick=()=>{
