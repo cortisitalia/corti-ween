@@ -1,1 +1,62 @@
-
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CORTIS: I finali</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040605;--fg:#cfe6da;--dim:#6d887c;--red:#c4121c;--cy:#19e6ff;--mg:#ff2a6d;color-scheme:dark}
+*{box-sizing:border-box}
+html{margin:0;background:var(--bg);color:var(--fg);min-height:100%}
+body{margin:0;font-family:"Special Elite","Courier New",monospace;font-size:1.05rem;line-height:1.6;padding:calc(env(safe-area-inset-top,0px) + 30px) 22px calc(env(safe-area-inset-bottom,0px) + 60px)}
+#noise{position:fixed;inset:0;width:100%;height:100%;z-index:60;pointer-events:none;opacity:.09;image-rendering:pixelated;mix-blend-mode:screen}
+.scan{position:fixed;inset:0;z-index:61;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.35) 0 1px,transparent 1px 3px)}
+.vig{position:fixed;inset:0;z-index:62;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.85) 100%)}
+main{max-width:760px;margin:0 auto}
+h1{font-family:"VT323",monospace;font-weight:400;font-size:clamp(3.2rem,14vw,6rem);line-height:1;margin:20px 0 6px;color:#e8fff2;letter-spacing:.08em;text-shadow:3px 0 var(--mg),-3px 0 var(--cy)}
+.lead{color:var(--dim);margin:0 0 28px}
+.end{border:2px solid #1d2c26;background:rgba(2,6,5,.86);padding:18px 20px;margin:0 0 16px}
+.end.new{border-color:var(--red);box-shadow:0 0 26px rgba(196,18,28,.5)}
+.end.lock{color:#3a4a43}
+.end h2{font-family:"VT323",monospace;font-weight:400;font-size:1.9rem;margin:0 0 4px;color:#fff;letter-spacing:.06em}
+.end.lock h2{color:#3a4a43}
+.end .n{font-family:"VT323",monospace;color:var(--red);font-size:1.3rem}
+.end p{margin:6px 0 0;color:#b9d3c7}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.btn{font:inherit;background:transparent;color:var(--fg);border:2px solid var(--fg);padding:12px 22px;font-size:1.05rem;cursor:pointer;text-decoration:none;letter-spacing:.05em}
+.btn:hover,.btn:focus-visible{background:var(--red);border-color:var(--red);color:#fff;outline:none}
+.btn.ghost{border-color:var(--dim);color:var(--dim)}
+</style>
+</head>
+<body>
+<canvas id="noise" aria-hidden="true"></canvas><div class="scan"></div><div class="vig"></div>
+<main>
+  <h1>I FINALI</h1>
+  <p class="lead" id="cnt"></p>
+  <div id="list"></div>
+  <div class="btns">
+    <a class="btn" href="index.html">Torna all'inizio</a>
+    <button class="btn ghost" id="again">Rigioca con scelte diverse</button>
+  </div>
+</main>
+<script>
+const ENDS=[
+ ["ALL FIVE","Finale migliore","Tutti riescono a uscire. La casa scompare nella nebbia e, per la prima volta, i ragazzi ridono davvero. Ma quando controlli il telefono, trovi una nuova fotografia scattata dall'interno della villa. Qualcuno è ancora lì."],
+ ["THE SIXTH","","La casa vi lascia andare, ma una figura compare alla finestra mentre vi allontanate. Non siete riusciti a capire chi fosse il sesto membro della fotografia."],
+ ["LOOP","","Aprite la porta, attraversate l'ingresso e vi ritrovate davanti alle stesse scale. Sono ancora le 23:47. La casa ha ricominciato da capo."],
+ ["THE TRAITOR","","Uno degli indizi era stato lasciato apposta per dividervi. Il gruppo riesce a fuggire, ma la fiducia tra voi è distrutta: uno di voi non è veramente chi dice di essere."],
+ ["THE HOUSE ALWAYS WINS","","Avete ignorato troppi indizi. La porta si apre su un'altra versione della villa, identica alla prima. Sulla parete, una nuova fotografia: voi sei, immobili, con gli occhi rivolti verso chi sta leggendo la storia."]];
+const $=q=>document.querySelector(q);
+let D={};try{D=JSON.parse(localStorage.getItem('cortis')||'{}')}catch(e){}
+const F=D.finali||[],cur=+new URLSearchParams(location.search).get('f')||0;
+$('#cnt').textContent='Finali scoperti: '+F.length+' su 5';
+$('#list').innerHTML=ENDS.map((e,i)=>{const n=i+1,ok=F.includes(n)||n===cur;
+ return ok?`<div class="end${n===cur?' new':''}"><span class="n">FINALE ${n}</span><h2>${e[0]}</h2><p>${e[2]}</p></div>`
+ :`<div class="end lock"><span class="n">FINALE ${n}</span><h2>? ? ?</h2><p>Non l'hai ancora scoperto.</p></div>`}).join('');
+$('#again').onclick=()=>{try{const k={introdone:D.introdone,finali:D.finali};localStorage.setItem('cortis',JSON.stringify(k))}catch(e){}location.href='episode1.html'};
+const cv=$('#noise'),cx=cv.getContext('2d');cv.width=200;cv.height=120;const im=cx.createImageData(200,120);let last=0;
+(function loop(t){if(t-last>70){const d=im.data;for(let i=0;i<d.length;i+=4){d[i]=d[i+1]=d[i+2]=Math.random()*255;d[i+3]=255}cx.putImageData(im,0,0);last=t}requestAnimationFrame(loop)})(0);
+</script>
+</body>
+</html>
