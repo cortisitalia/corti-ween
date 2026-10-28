@@ -177,7 +177,7 @@ body.dark #dark{display:block}
 <script>
 /* ====== DA PERSONALIZZARE ===== */
 const HOME_URL = "index.html";   // pagina principale del sito (link "esci")
-   const START_URL = "episode1.html";            // pagina dell'Episodio 1, es. "episodio-1.html"; vuoto = messaggio "non ancora trasmesso"
+const START_URL = "episode1.html";   // pagina dell'Episodio 1: ci si arriva dal bottone finale e da "salta"
 /* Sfondi per luogo (si adattano a PC e telefono con ritaglio automatico) */
 const BG = {
   van:      "https://i.pinimg.com/736x/fe/69/24/fe692464524007913ed4e23210653048.jpg",
@@ -204,6 +204,9 @@ const CAST = {
   keonho:    {name:"Keonho",     img:"foto/keonho.png",     side:"l", pitch:200}
 };
 /* =============================== */
+
+/* segna l'introduzione come vista: da quel momento gli episodi si possono aprire */
+function markSeen(){try{const d=JSON.parse(localStorage.getItem('cortis')||'{}');d.introdone=1;localStorage.setItem('cortis',JSON.stringify(d))}catch(e){}}
 
 /* ====== LA STORIA ====== */
 const n=(t,fx)=>({w:"n",t,fx}), s=(w,t,fx)=>({w,t,fx}), card=(time,sub,clock)=>({card:1,time,sub,clock:clock||time});
@@ -556,10 +559,21 @@ function prev(){
   render(idx-1,false);
 }
 function showEnd(){
+  markSeen();
   ended=true;$('#end').classList.add('on');box.classList.add('hide');
   $('#prog').style.width='100%';
 }
 function toast(t){const el=$('#toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',3200)}
+
+/* --- vai all'Episodio 1 (segna l'introduzione come vista) --- */
+function goEpisode(){
+  markSeen();
+  $('#ch').textContent='CH 06';staticBlip();
+  setTimeout(()=>{
+    if(START_URL)location.href=START_URL;
+    else toast('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO');
+  },380);
+}
 
 /* --- controlli --- */
 document.addEventListener('click',e=>{
@@ -572,16 +586,10 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='ArrowLeft'){e.preventDefault();prev()}
 });
 $('#back').onclick=prev;
-$('#skip').onclick=()=>{finishTyping();idx=S.length-1;applyState(idx);showEnd()};
+$('#skip').onclick=()=>{finishTyping();goEpisode()};   /* "salta" porta subito all'Episodio 1 */
 $('#home').onclick=e=>{e.preventDefault();location.href=HOME_URL};
 $('#again').onclick=()=>{ended=false;$('#end').classList.remove('on');clearStage();render(0,true)};
-$('#go').onclick=()=>{
-  $('#ch').textContent='CH 06';staticBlip();
-  setTimeout(()=>{
-    if(START_URL)location.href=START_URL;
-    else toast('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO');
-  },380);
-};
+$('#go').onclick=goEpisode;
 /* luce della torcia quando la villa è al buio */
 function moveLight(e){
   const p=e.touches?e.touches[0]:e;
