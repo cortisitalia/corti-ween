@@ -168,10 +168,10 @@ footer{margin-top:80px;font-size:.8rem;color:#4b6258;max-width:60ch}
   <ul class="eps">
     <li><time>23:47</time><a href="introduzione.html" id="intro">Introduzione · La notte comincia</a></li>
     <li><time>00:00</time><a href="episode1.html" id="ep1">Episodio 1 · Il primo passo</a></li>
-    <li class="lock"><time>01:xx</time><span>La casa vi conosce</span></li>
-    <li class="lock"><time>00:38</time><span>Non aprire la porta</span></li>
-    <li class="lock"><time>03:xx</time><span>Il prezzo della fuga</span></li>
-    <li class="lock"><time>04:59</time><span>Chi esce per primo?</span></li>
+    <li><time>01:xx</time><a href="episode2.html" id="ep2">Episodio 2 · La casa vi conosce</a></li>
+    <li><time>00:38</time><a href="episode3.html" id="ep3">Episodio 3 · Non aprire la porta</a></li>
+    <li><time>03:xx</time><a href="episode4.html" id="ep4">Episodio 4 · Il prezzo della fuga</a></li>
+    <li><time>04:59</time><a href="episode5.html" id="ep5">Episodio 5 · Chi esce per primo?</a></li>
   </ul>
   <p class="lead" style="margin-top:28px" id="fcount">Finali scoperti: 0 su 5</p>
   <div class="ends"><span>?</span><span>?</span><span>?</span><span>?</span><span>?</span></div>
@@ -406,13 +406,9 @@ $('#enter').onclick=()=>{
 const D=(()=>{try{return JSON.parse(localStorage.getItem('cortis')||'{}')}catch(e){return {}}})();
 const go=e=>{e.preventDefault();const u=e.currentTarget.href;channel('CH 04',()=>{location.href=u})};
 $('#intro').onclick=go;
-if(!D.introdone)$('#ep1').parentElement.classList.add('lock');
-$('#ep1').onclick=e=>{if(D.introdone)return go(e);e.preventDefault();toast("GUARDA PRIMA L'INTRODUZIONE")};
-const TT=[["01:xx","La casa vi conosce"],["00:38","Non aprire la porta"],["03:xx","Il prezzo della fuga"],["04:59","Chi esce per primo?"]];
-document.querySelectorAll('.eps li.lock').forEach(li=>{
-  const i=[...li.parentElement.children].indexOf(li)-2;
-  if(i>=0&&D['ep'+(i+1)+'done']){li.classList.remove('lock');li.innerHTML='<time>'+TT[i][0]+'</time><a href="episode'+(i+2)+'.html">Episodio '+(i+2)+' · '+TT[i][1]+'</a>';li.querySelector('a').onclick=go}
-});
+/* tutti gli episodi sono nella lista, ma si aprono solo dopo l'introduzione */
+['#ep1','#ep2','#ep3','#ep4','#ep5'].forEach(s=>{const a=$(s);if(!D.introdone)a.parentElement.classList.add('lock');
+  a.onclick=e=>{if(D.introdone)return go(e);e.preventDefault();toast("GUARDA PRIMA L'INTRODUZIONE")}});
 const F=D.finali||[];$('#fcount').textContent='Finali scoperti: '+F.length+' su 5';
 document.querySelectorAll('.ends span').forEach((s,i)=>{if(F.includes(i+1)){s.textContent=i+1;s.style.color='#e8fff2';s.style.borderColor='#c4121c';s.style.cursor='pointer';s.onclick=()=>location.href='finali.html?f='+(i+1)}});
 </script>
