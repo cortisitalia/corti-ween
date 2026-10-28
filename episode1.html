@@ -108,7 +108,7 @@ body.dark #dark{display:block}
 <div class="osd tl rec" id="cam">REC VILLA_CAM_01</div>
 <div class="osd tc" id="chap"></div>
 <div class="osd tr" id="clock">00:00</div>
-<div id="ctl"><a href="introduzione.html" id="home">esci</a><button id="mute">audio: on</button></div>
+<div id="ctl"><a href="index.html" id="home">esci</a><button id="mute">audio: on</button></div>
 
 <div id="end"><div>
   <h2>FINE EPISODIO 1</h2>
@@ -141,18 +141,18 @@ const n=(t,fx,bg)=>({w:"n",t,fx,bg}),s=(w,t,fx)=>({w,t,fx}),cd=(time,sub,bg,l,r)
 /* ====== EPISODIO 1 · 5 CAPITOLI ====== */
 const S=[
 cd("00:00","Capitolo 1 · Benvenuti a casa","salotto","martin","seonghyeon"),
-n("Il lampadario oscillava ancora sopra di voi."),
-n("Nessuno riusciva a staccare gli occhi dalla fotografia. Dalla figura scura dietro di voi. Dal volto che era il tuo."),
+n("Il lampadario oscillava ancora sopra di voi.","creak"),
+n("Nessuno riusciva a staccare gli occhi dalla fotografia. Dalla figura scura dietro di voi. Dal volto che era il tuo.","heart"),
 s("tu","«Non sono io. Non può essere io.»"),
 s("martin","«Okay. Ottima scenografia. Davvero. Chi l'ha organizzata merita un aumento.»"),
 n("Martin sorrideva, ma i suoi occhi continuavano a tornare alla parete dove prima c'era la porta."),
 s("james","«Sarà una porta scorrevole. Un trucco del programma.»"),
-n("James picchiò il pugno sulla parete di fotografie."),
+n("James picchiò il pugno sulla parete di fotografie.","thud"),
 n("Il suono fu pieno. Solido. Muro vero."),
 s("juhoon","«Telefoni. Chi ha segnale?»"),
-n("Juhoon alzò il telefono sopra la testa e girò su se stesso. Poi provò con l'altro."),
+n("Juhoon alzò il telefono sopra la testa e girò su se stesso. Poi provò con l'altro.","nosig"),
 s("juhoon","«Nessun segnale.»"),
-n("Il tuo telefono restava nero. Lo premesti, lo scuotesti. Niente."),
+n("Il tuo telefono restava nero. Lo premesti, lo scuotesti. Niente.","click"),
 s("seonghyeon","«Quanto doveva durare la notte?»"),
 s("tu","«Fino all'alba. La registrazione finale era alle cinque.»"),
 s("seonghyeon","«Cinque ore.»"),
@@ -160,8 +160,8 @@ n("Seonghyeon guardò la fotografia con le vostre facce. Non la toccò."),
 
 cd("00:07","Capitolo 2 · Impronte","salotto","keonho","james"),
 n("Per sette minuti cercaste un'altra uscita."),
-n("Il salone aveva tre porte. Due erano bloccate. La terza dava su un corridoio senza finestre che finiva in un muro.",null,"corridoio"),
-n("Tornaste al centro della stanza. James si accovacciò vicino alle impronte bagnate.",null,"salotto"),
+n("Il salone aveva tre porte. Due erano bloccate. La terza dava su un corridoio senza finestre che finiva in un muro.","rattle","corridoio"),
+n("Tornaste al centro della stanza. James si accovacciò vicino alle impronte bagnate.","drip","salotto"),
 s("james","«Guardate. Sono più piccole delle nostre. E non escono dalla villa. Entrano soltanto.»"),
 s("martin","«Quindi qualcuno è entrato con noi.»"),
 s("juhoon","«O era già qui.»"),
@@ -177,40 +177,40 @@ n("Seonghyeon lo osservò più a lungo del necessario."),
 cd("00:15","Capitolo 3 · I passi","ingresso","juhoon","james"),
 n("Dall'alto arrivò di nuovo il rumore.","steps"),
 n("Qualcuno correva."),
-n("Questa volta non si fermò sul bordo. Percorse tutto il corridoio, tornò indietro, poi ancora. Come chi aspetta e sta perdendo la pazienza."),
+n("Questa volta non si fermò sul bordo. Percorse tutto il corridoio, tornò indietro, poi ancora. Come chi aspetta e sta perdendo la pazienza.","steps"),
 s("james","«Okay. Io salgo.»"),
 s("juhoon","«Nemmeno per sogno. Restiamo insieme.»"),
 s("james","«Insieme, allora.»"),
 n("Fu un voto a maggioranza silenziosa. Nessuno disse sì. Nessuno disse no."),
 n("Juhoon prese la torcia più forte e si mise davanti. Tu lo seguisti, con la videocamera in mano."),
-n("Il primo gradino scricchiolò sotto il suo peso."),
-n("Era bagnato."),
+n("Il primo gradino scricchiolò sotto il suo peso.","creak"),
+n("Era bagnato.","drip"),
 n("Come se qualcuno ci fosse passato un attimo prima."),
 
 cd("00:21","Capitolo 4 · Il buio","ingresso","martin","seonghyeon"),
 n("Le luci si spensero.","blackout"),
-n("Nel buio, qualcuno sussurrò un nome."),
-n("«Martin.»"),
+n("Nel buio, qualcuno sussurrò un nome.","whisper"),
+n("«Martin.»","whisper"),
 s("martin","«Chi ha detto il mio nome?»"),
 s("james","«Io no.»"),
 s("juhoon","«Nemmeno io.»"),
 n("Il sussurro era vicinissimo. Più vicino di chiunque di voi."),
 n("Poi le luci tornarono.","lights"),
-n("Contasti le teste. Sei. Contasti ancora. Sei."),
-n("Ma Keonho non era più accanto a Juhoon. Era sulle scale, cinque gradini più in alto."),
+n("Contasti le teste. Sei. Contasti ancora. Sei.","heart"),
+n("Ma Keonho non era più accanto a Juhoon. Era sulle scale, cinque gradini più in alto.","sting"),
 s("juhoon","«Keonho. Quando ti sei mosso?»"),
 s("keonho","«Non mi sono mosso.»"),
 n("Per un istante, accanto a lui, nell'ombra del corrimano, qualcosa di alto e pallido.","scare"),
 n("Poi più niente."),
-n("Keonho scese lentamente. Nessuno disse una parola."),
+n("Keonho scese lentamente. Nessuno disse una parola.","creak"),
 
 cd("00:30","Capitolo 5 · La prima scelta","salotto","martin","seonghyeon"),
 n("Poi il telefono sul tavolino ricominciò a squillare.","ring"),
 n("Lo stesso apparecchio beige di prima. Il cavo era ancora tagliato."),
 n("Seonghyeon fu il primo a fare un passo verso di lui."),
-n("E dal piano di sopra, dalla porta socchiusa, una voce chiamò."),
+n("E dal piano di sopra, dalla porta socchiusa, una voce chiamò.","door"),
 s("voce","«Martin… sali.»"),
-n("Martin impallidì. James lo afferrò per il braccio."),
+n("Martin impallidì. James lo afferrò per il braccio.","heart"),
 s("martin","«Non so cosa vogliano da me.»"),
 s("juhoon","«Decidiamo adesso. Insieme.»"),
 {w:"n",t:"SONDAGGIO · Cosa deve fare il gruppo?",ch:[
@@ -221,28 +221,28 @@ s("juhoon","«Decidiamo adesso. Insieme.»"),
 
 const BR={
 A:[
- n("Salite. Martin davanti, James subito dietro, perché non vuole lasciarlo solo.",null,"corridoio"),
- n("Il corridoio è vuoto. Ogni porta si apre su una stanza spoglia, senza mobili, con la polvere intatta."),
+ n("Salite. Martin davanti, James subito dietro, perché non vuole lasciarlo solo.","steps","corridoio"),
+ n("Il corridoio è vuoto. Ogni porta si apre su una stanza spoglia, senza mobili, con la polvere intatta.","creak"),
  n("Nessuno è passato di qui da anni."),
  s("martin","«Allora chi mi ha chiamato?»"),
- n("Nessuna risposta. Ma in fondo al corridoio la porta si richiude, piano.")],
+ n("Nessuna risposta. Ma in fondo al corridoio la porta si richiude, piano.","door")],
 B:[
  s("juhoon","«C'è una planimetria incorniciata, vicino al camino. Cerchiamo una cantina.»"),
- n("La trovate. La cantina esiste, si raggiunge da una scala nascosta dietro il camino.",null,"cantina"),
- n("In fondo, un muro. Murato, umido, coperto di graffi."),
+ n("La trovate. La cantina esiste, si raggiunge da una scala nascosta dietro il camino.","creak","cantina"),
+ n("In fondo, un muro. Murato, umido, coperto di graffi.","drip"),
  s("james","«Qualcuno ha provato a uscire da qui.»"),
- n("Le unghie hanno lasciato solchi nell'intonaco. Troppi per contarli.")],
+ n("Le unghie hanno lasciato solchi nell'intonaco. Troppi per contarli.","scratch")],
 C:[
  s("seonghyeon","«Pronto?»"),
- n("Dalla cornetta arriva un respiro lento."),
- n("Poi una voce molto bassa, quasi gentile."),
+ n("Dalla cornetta arriva un respiro lento.","breath"),
+ n("Poi una voce molto bassa, quasi gentile.","whisper"),
  s("voce","«Non siete soli.»"),
- n("Click. La linea cade. Il cavo, sul tavolino, è ancora tagliato.")]
+ n("Click. La linea cade. Il cavo, sul tavolino, è ancora tagliato.","click")]
 };
 const TAIL=[
  n("Nessuna delle strade porta a qualcosa di utile. Tornate nel salone, più stanchi e più vicini.",null,"salotto"),
  n("Sul tavolino, accanto al telefono, c'è qualcosa che prima non c'era."),
- n("Una fotografia.")
+ n("Una fotografia.","sting")
 ];
 
 /* ====== MOTORE ====== */
@@ -258,13 +258,22 @@ const im=cx.createImageData(200,120);let last=0;
 (function loop(t){if(t-last>70){const d=im.data;for(let i=0;i<d.length;i+=4){d[i]=d[i+1]=d[i+2]=Math.random()*255;d[i+3]=255}cx.putImageData(im,0,0);last=t}requestAnimationFrame(loop)})(0);
 
 let ac,master,muted=false;
-function initAudio(){try{ac=new(window.AudioContext||window.webkitAudioContext)();ac.resume&&ac.resume();master=ac.createGain();master.gain.value=.8;master.connect(ac.destination);
+function unlockIOS(){try{navigator.audioSession&&(navigator.audioSession.type='playback')}catch(e){}
+ try{const sr=8000,n=sr/2,buf=new ArrayBuffer(44+n),v=new DataView(buf);const w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
+ w(0,'RIFF');v.setUint32(4,36+n,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,'data');v.setUint32(40,n,true);
+ for(let i=0;i<n;i++)v.setUint8(44+i,128);const a=new Audio(URL.createObjectURL(new Blob([buf],{type:'audio/wav'})));a.loop=true;a.setAttribute('playsinline','');a.play().catch(()=>{});window._sil=a}catch(e){}}
+['pointerdown','touchend','click','keydown'].forEach(ev=>addEventListener(ev,()=>{if(ac&&ac.state!=='running')ac.resume()},true));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ac&&ac.state!=='running')ac.resume()});
+function initAudio(){try{ac=new(window.AudioContext||window.webkitAudioContext)();unlockIOS();ac.resume&&ac.resume();master=ac.createGain();master.gain.value=.8;master.connect(ac.destination);
  const o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.value=47;g.gain.value=.012;o.connect(g);g.connect(master);o.start()}catch(e){}}
 function burst(d,v,lpf,t0){if(!ac)return;const k=ac.sampleRate*d,b=ac.createBuffer(1,k,ac.sampleRate),a=b.getChannelData(0);for(let i=0;i<k;i++)a[i]=Math.random()*2-1;
  const so=ac.createBufferSource(),g=ac.createGain(),t=ac.currentTime+(t0||0);so.buffer=b;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);
  let nd=so;if(lpf){const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=lpf;so.connect(f);nd=f}nd.connect(g);g.connect(master);so.start(t)}
 function tone(w,f0,f1,t0,dur,vol){if(!ac)return;const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+t0;o.type=w;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dur);
  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.05)}
+function nz(d,v,type,f,q,t0){if(!ac)return;const k=ac.sampleRate*d,b=ac.createBuffer(1,k,ac.sampleRate),a=b.getChannelData(0);for(let i=0;i<k;i++)a[i]=Math.random()*2-1;
+ const so=ac.createBufferSource(),fl=ac.createBiquadFilter(),g=ac.createGain(),t=ac.currentTime+(t0||0);so.buffer=b;fl.type=type;fl.frequency.value=f;fl.Q.value=q;
+ g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(v,t+d*.4);g.gain.exponentialRampToValueAtTime(.001,t+d);so.connect(fl);fl.connect(g);g.connect(master);so.start(t)}
 function scream(){burst(.9,1);[90,133,201].forEach((f,i)=>tone('sawtooth',f,f*5,0,.8,.35-i*.08))}
 $('#mute').onclick=e=>{muted=!muted;if(master)master.gain.value=muted?0:.8;e.target.textContent='audio: '+(muted?'off':'on')};
 
@@ -272,6 +281,18 @@ function flash(a){const f=$('#flash');f.style.transition='none';f.style.opacity=
 function blip(){document.body.classList.add('static');burst(.4,.3);setTimeout(()=>document.body.classList.remove('static'),350)}
 const FACE=`<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"><rect width="200" height="200" fill="#000"/><path d="M30 200C30 120 50 30 100 30s70 90 70 170z" fill="#0b0b0b"/><ellipse cx="100" cy="100" rx="46" ry="62" fill="#d7ddd5"/><ellipse cx="80" cy="88" rx="13" ry="20" fill="#000"/><ellipse cx="120" cy="88" rx="13" ry="20" fill="#000"/><circle cx="80" cy="92" r="2.5" fill="#fff"/><circle cx="120" cy="92" r="2.5" fill="#fff"/><path d="M100 98l-4 20h8z" fill="#9aa39b"/><ellipse cx="100" cy="146" rx="19" ry="26" fill="#000"/></svg>`;
 const FX={
+ creak(){tone('sawtooth',80,55,0,.7,.12);tone('sawtooth',130,90,.15,.5,.08);nz(.8,.12,'bandpass',400,4,0)},
+ thud(){tone('sine',130,35,0,.25,.9);burst(.15,.5,300)},
+ click(){tone('square',1800,700,0,.04,.4);burst(.05,.4,3000)},
+ nosig(){[0,.3].forEach(x=>tone('square',400,380,x,.15,.15))},
+ rattle(){for(let i=0;i<7;i++){tone('square',300+Math.random()*200,150,i*.08,.04,.3);burst(.04,.3,2000,i*.08)}tone('sine',110,40,.7,.25,.7)},
+ drip(){tone('sine',1400,500,0,.08,.3);tone('sine',1100,400,.4,.08,.2);tone('sine',1250,450,1,.08,.15)},
+ whisper(){nz(1.6,.35,'bandpass',2200,2,0);nz(1.2,.25,'bandpass',3200,3,.5)},
+ breath(){nz(1.4,.45,'lowpass',700,.7,0);nz(1.4,.45,'lowpass',700,.7,1.6)},
+ scratch(){for(let i=0;i<8;i++)nz(.16,.3,'highpass',3000,1,i*.13)},
+ heart(){[0,.55,1.1].forEach(x=>{tone('sine',60,30,x,.18,.9);tone('sine',55,28,x+.18,.18,.7)})},
+ sting(){tone('sawtooth',220,110,0,1.2,.22);tone('sawtooth',233,116,0,1.2,.22);burst(.3,.3,800)},
+ door(){nz(.9,.15,'bandpass',300,5,0);tone('sawtooth',90,60,0,.8,.1);tone('sine',120,35,.8,.3,.9);burst(.2,.5,300,.8)},
  steps(){for(let i=0;i<9;i++)tone('sine',95,45,i*(.2-i*.012),.1,.8)},
  blackout(){const b=$('#blk');b.classList.remove('on');void b.offsetWidth;b.classList.add('on');document.body.classList.add('dark');tone('sine',60,20,0,1,.8);burst(.4,.5,400)},
  lights(){document.body.classList.remove('dark');flash(.5);tone('square',90,60,0,.25,.5);burst(.2,.4,500)},
@@ -310,11 +331,11 @@ function render(i){
  if(L.fx&&FX[L.fx])FX[L.fx]();
  if(L.ch)L.ch.forEach(([k,t,d])=>{const b=document.createElement('button');b.className='opt';b.innerHTML='<b>'+k+' — '+t+'</b><span>'+d+'</span>';b.onclick=()=>pick(k);opts.appendChild(b)});
 }
-function pick(k){picked=true;clearTimeout(timer);typing=false;SAVE('ep1',k);S.splice(idx+1,0,...BR[k],...TAIL);blip();render(idx+1)}
+function pick(k){picked=true;clearTimeout(timer);typing=false;SAVE('ep1',k);tone('square',880,880,0,.08,.2);S.splice(idx+1,0,...BR[k],...TAIL);blip();render(idx+1)}
 function next(){if(typing){finishTyping();return}
  if(S[idx].ch&&!picked)return;
  if(idx>=S.length-1){showEnd();return}render(idx+1)}
-function showEnd(){ended=true;SAVE('ep1done',1);document.body.classList.remove('dark');$('#end').classList.add('on');box.classList.add('hide');$('#prog').style.width='100%'}
+function showEnd(){ended=true;if(FX.sting)FX.sting();SAVE('ep1done',1);document.body.classList.remove('dark');$('#end').classList.add('on');box.classList.add('hide');$('#prog').style.width='100%'}
 document.addEventListener('click',e=>{if(!started||ended||e.target.closest('button,a'))return;next()});
 document.addEventListener('keydown',e=>{if(!started||ended)return;if(e.key===' '||e.key==='Enter'||e.key==='ArrowRight'){if(e.target.closest&&e.target.closest('.opt'))return;e.preventDefault();next()}});
 $('#home').onclick=e=>{e.preventDefault();location.href=HOME_URL};
