@@ -173,7 +173,7 @@ footer{margin-top:80px;font-size:.8rem;color:#4b6258;max-width:60ch}
     <li class="lock"><time>03:xx</time><span>Il prezzo della fuga</span></li>
     <li class="lock"><time>04:59</time><span>Chi esce per primo?</span></li>
   </ul>
-  <p class="lead" style="margin-top:28px">Finali scoperti: 0 su 5</p>
+  <p class="lead" style="margin-top:28px" id="fcount">Finali scoperti: 0 su 5</p>
   <div class="ends"><span>?</span><span>?</span><span>?</span><span>?</span><span>?</span></div>
 
   <footer>Progetto fan non ufficiale, creato per Halloween. Non è affiliato ai CORTIS né alla loro agenzia. Tutti i fatti raccontati qui sono inventati.</footer>
@@ -402,11 +402,19 @@ $('#enter').onclick=()=>{
   });
 };
 /* nella lista: Introduzione ed Episodio 1 sono due voci separate */
-['#intro','#ep1'].forEach(s=>$(s).onclick=e=>{
-  e.preventDefault();
-  const u=e.currentTarget.href;
-  channel('CH 04',()=>{location.href=u});
+/* progresso salvato: l'introduzione sblocca gli episodi, ogni episodio finito sblocca il successivo */
+const D=(()=>{try{return JSON.parse(localStorage.getItem('cortis')||'{}')}catch(e){return {}}})();
+const go=e=>{e.preventDefault();const u=e.currentTarget.href;channel('CH 04',()=>{location.href=u})};
+$('#intro').onclick=go;
+if(!D.introdone)$('#ep1').parentElement.classList.add('lock');
+$('#ep1').onclick=e=>{if(D.introdone)return go(e);e.preventDefault();toast("GUARDA PRIMA L'INTRODUZIONE")};
+const TT=[["01:xx","La casa vi conosce"],["00:38","Non aprire la porta"],["03:xx","Il prezzo della fuga"],["04:59","Chi esce per primo?"]];
+document.querySelectorAll('.eps li.lock').forEach(li=>{
+  const i=[...li.parentElement.children].indexOf(li)-2;
+  if(i>=0&&D['ep'+(i+1)+'done']){li.classList.remove('lock');li.innerHTML='<time>'+TT[i][0]+'</time><a href="episode'+(i+2)+'.html">Episodio '+(i+2)+' · '+TT[i][1]+'</a>';li.querySelector('a').onclick=go}
 });
+const F=D.finali||[];$('#fcount').textContent='Finali scoperti: '+F.length+' su 5';
+document.querySelectorAll('.ends span').forEach((s,i)=>{if(F.includes(i+1)){s.textContent=i+1;s.style.color='#e8fff2';s.style.borderColor='#c4121c';s.style.cursor='pointer';s.onclick=()=>location.href='finali.html?f='+(i+1)}});
 </script>
 </body>
 </html>
