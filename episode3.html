@@ -120,6 +120,8 @@ body.dark #dark{display:block}
 <div id="flash"></div><div id="scare" aria-hidden="true"></div>
 
 <script>
+/* blocco: si entra negli episodi solo dopo l'introduzione (per provare: aggiungi #dev all'indirizzo) */
+try{const d=JSON.parse(localStorage.getItem('cortis')||'{}');if(!d.introdone&&location.hash!=='#dev')location.replace('introduzione.html')}catch(e){}
 const HOME_URL="index.html", NEXT_URL="episode4.html";
 const BG={
   salotto:"https://i.pinimg.com/736x/6e/95/26/6e9526c4d976b37d1ca02422899ebc97.jpg",
