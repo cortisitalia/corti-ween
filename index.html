@@ -320,7 +320,7 @@ function jumpscare(t,k){
 }
 function schedule(){
   if(auto>=4)return;auto++;
-  setTimeout(()=>{jumpscare();schedule()},22000+Math.random()*30000);
+  setTimeout(()=>{jumpscare();schedule()},15000+Math.random()*5000);
 }
 /* modalità test: aggiungi #debug all'indirizzo per avere i 5 pulsanti */
 if(location.hash==='#debug'){
