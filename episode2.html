@@ -85,6 +85,29 @@ body.dark #dark{display:block}
 @keyframes zoom{from{transform:scale(.4)}to{transform:scale(1.3)}}
 @media (max-width:700px){:root{--cast-h:80svh;--cast-w:100vw}.slot.l{left:-18vw}.slot.r{right:-18vw}#box{padding:24px 16px 20px}.osd.tc{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.roll{display:none}}
+
+/* ---- jumpscare con le foto ---- */
+#js{position:fixed;inset:0;z-index:100;background:#000;display:none;overflow:hidden}
+#js.on{display:block}
+#js .face,#js .ly{position:absolute;inset:0}
+#js img,#js svg{width:100%;height:100%;object-fit:cover;display:block}
+#js.t1.on{animation:jsf .1s steps(2) 7}
+#js.t1 .face{animation:zoom .8s cubic-bezier(.2,.9,.1,1) forwards}
+#js.t2 .face{animation:jit .08s steps(2) infinite}
+@keyframes jit{0%{transform:translate(-8px,3px) scale(1.04)}100%{transform:translate(9px,-4px) scale(1.08)}}
+#js.t2 .ly{filter:contrast(1.5) saturate(.5)}
+#js.t2 .ly.r{filter:grayscale(1) sepia(1) hue-rotate(300deg) saturate(6);mix-blend-mode:screen;opacity:.65;transform:translateX(-14px)}
+#js.t2 .ly.c{filter:grayscale(1) sepia(1) hue-rotate(140deg) saturate(6);mix-blend-mode:screen;opacity:.65;transform:translateX(14px)}
+#js.t3 .face{opacity:0;animation:fl 1s steps(1) .9s forwards}
+@keyframes fl{0%{opacity:1;filter:invert(1) contrast(1.8) brightness(1.5)}25%{opacity:1;filter:none}50%{opacity:1;filter:invert(1)}60%,100%{opacity:1;filter:none}}
+#js.t4 .face{animation:rise .22s ease-out forwards,creep 1.6s linear .22s forwards}
+#js.t4::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 25%,#000 100%)}
+@keyframes rise{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes creep{from{transform:scale(1)}to{transform:scale(1.18)}}
+#js.t5 .face{filter:grayscale(.7) contrast(1.5);animation:tvz 1.4s linear forwards}
+@keyframes tvz{from{transform:scale(1)}to{transform:scale(1.25)}}
+#js.t5 .ly.sl{animation:tear .35s steps(1) infinite}
+@keyframes tear{0%{clip-path:inset(12% 0 78% 0);transform:translateX(-40px)}25%{clip-path:inset(55% 0 30% 0);transform:translateX(50px)}50%{clip-path:inset(80% 0 6% 0);transform:translateX(-25px)}75%{clip-path:inset(30% 0 60% 0);transform:translateX(35px)}}
 </style>
 </head>
 <body>
@@ -116,6 +139,7 @@ body.dark #dark{display:block}
   <button class="btn" id="go">Episodio 3</button><br>
   <button class="btn ghost" id="again">Rigioca l'episodio</button>
 </div></div>
+<div id="js" aria-hidden="true"><div class="face" id="face"></div></div>
 <div id="flash"></div><div id="scare" aria-hidden="true"></div>
 
 <script>
@@ -293,6 +317,43 @@ $('#mute').onclick=e=>{muted=!muted;if(master)master.gain.value=muted?0:.8;e.tar
 function flash(a){const f=$('#flash');f.style.transition='none';f.style.opacity=a;requestAnimationFrame(()=>requestAnimationFrame(()=>{f.style.transition='opacity .4s';f.style.opacity=0}))}
 function blip(){document.body.classList.add('static');burst(.4,.3);setTimeout(()=>document.body.classList.remove('static'),350)}
 const FACE=`<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"><rect width="200" height="200" fill="#000"/><path d="M30 200C30 120 50 30 100 30s70 90 70 170z" fill="#0b0b0b"/><ellipse cx="100" cy="100" rx="46" ry="62" fill="#d7ddd5"/><ellipse cx="80" cy="88" rx="13" ry="20" fill="#000"/><ellipse cx="120" cy="88" rx="13" ry="20" fill="#000"/><circle cx="80" cy="92" r="2.5" fill="#fff"/><circle cx="120" cy="92" r="2.5" fill="#fff"/><path d="M100 98l-4 20h8z" fill="#9aa39b"/><ellipse cx="100" cy="146" rx="19" ry="26" fill="#000"/></svg>`;
+/* ====== JUMPSCARE: foto al posto del volto standard + timer 15-20 secondi ====== */
+const JS_IMGS=[
+  "https://i.pinimg.com/736x/a1/ed/f4/a1edf463bf81a4f9108cd533bcb5d96c.jpg",
+  "https://i.pinimg.com/736x/e9/cc/6b/e9cc6b30955d02c416c432f1719b885f.jpg",
+  "https://i.pinimg.com/736x/c0/45/fa/c045fa29c2202357905d1451440510bc.jpg",
+  "https://i.pinimg.com/736x/6b/73/19/6b73190610e23e61ceeabe23ed8a9a25.jpg",
+  "https://i.pinimg.com/736x/b5/79/9f/b5799f674d092bf71bb16894796b9d65.jpg"];
+function deck(n){let a=[];return()=>{if(!a.length)a=[...Array(n).keys()].sort(()=>Math.random()-.5);return a.pop()}}
+const pickImg=deck(JS_IMGS.length),pickType=deck(5),DUR=[0,950,1150,1900,1600,1400];
+let busy=false,auto=0;
+function sfx(t){if(!ac)return;
+ if(t===1)scream();
+ else if(t===2){burst(.7,.9);for(let i=0;i<10;i++)tone('square',400+Math.random()*2400,400+Math.random()*2400,i*.06,.05,.25)}
+ else if(t===3){[.15,.4,.7].forEach(s=>tone('sine',70,30,s,.2,.9));setTimeout(scream,900)}
+ else if(t===4){tone('sawtooth',38,140,0,.9,.5);tone('sine',60,25,0,.5,1);burst(.5,.5)}
+ else{tone('sine',3000,120,0,.7,.4);burst(.6,.8);tone('square',90,60,.3,.6,.4)}}
+function jumpscare(t,k){
+ if(busy)return;busy=true;
+ t=t||pickType()+1;k=k==null?pickImg():k;
+ const u=JS_IMGS[k%JS_IMGS.length],im=u?`<img src="${u}" alt="">`:FACE;
+ const ly=c=>`<div class="ly ${c}">${im}</div>`;
+ $('#face').innerHTML=t===2?ly('')+ly('r')+ly('c'):t===5?ly('')+ly('sl'):ly('');
+ const el=$('#js');el.className='t'+t+' on';sfx(t);
+ if(!reduce){if(t===1||t===4)document.body.classList.add('shake');
+  if(t===5)[0,160,260,420].forEach((d,i)=>setTimeout(()=>document.body.classList.toggle('static',i%2===0),d));
+  navigator.vibrate&&navigator.vibrate(t===3?[0,900,300]:[200,80,300])}
+ setTimeout(()=>{el.className='';document.body.classList.remove('shake','static');busy=false},DUR[t]);
+}
+/* ogni 15-20 secondi di lettura esce un jumpscare (max 4 per episodio); mai durante carte, scelte e finale */
+function schedule(){
+ if(auto>=4)return;
+ setTimeout(()=>{
+  const ok=started&&!ended&&!busy&&!cardEl.classList.contains('on')&&!(S[idx]&&S[idx].ch);
+  if(ok){auto++;jumpscare()}
+  schedule();
+ },15000+Math.random()*5000);
+}
 const FX={
  creak(){tone('sawtooth',80,55,0,.7,.12);tone('sawtooth',130,90,.15,.5,.08);nz(.8,.12,'bandpass',400,4,0)},
  thud(){tone('sine',130,35,0,.25,.9);burst(.15,.5,300)},
@@ -310,8 +371,7 @@ const FX={
  blackout(){const b=$('#blk');b.classList.remove('on');void b.offsetWidth;b.classList.add('on');document.body.classList.add('dark');tone('sine',60,20,0,1,.8);burst(.4,.5,400)},
  lights(){document.body.classList.remove('dark');flash(.5);tone('square',90,60,0,.25,.5);burst(.2,.4,500)},
  ring(){[0,1.3,2.6].forEach(r=>{for(let k=0;k<9;k++)tone('square',k%2?480:440,k%2?480:440,r+k*.055,.05,.12)})},
- scare(){const el=$('#scare');el.innerHTML=FACE;el.classList.add('on');scream();document.body.classList.add('shake');navigator.vibrate&&navigator.vibrate([200,80,300]);
-  setTimeout(()=>{el.classList.remove('on');el.innerHTML='';document.body.classList.remove('shake')},950)}
+ scare(){jumpscare()}
 };
 
 const slots={l:{el:$('#sl'),key:null},r:{el:$('#sr'),key:null}};
@@ -357,7 +417,7 @@ $('#again').onclick=()=>location.reload();
 function moveLight(e){document.documentElement.style.setProperty('--x',e.clientX+'px');document.documentElement.style.setProperty('--y',e.clientY+'px')}
 addEventListener('pointermove',moveLight);addEventListener('pointerdown',moveLight);
 $('#start').onclick=()=>{initAudio();document.body.classList.add('static');burst(.6,.35);
- setTimeout(()=>{$('#gate').style.display='none';$('#stage').classList.add('on');$('#ctl').style.display='flex';started=true;render(0)},380);
+ setTimeout(()=>{$('#gate').style.display='none';$('#stage').classList.add('on');$('#ctl').style.display='flex';started=true;JS_IMGS.forEach(u=>{new Image().src=u});render(0);schedule()},380);
  setTimeout(()=>document.body.classList.remove('static'),650)};
 </script>
 </body>
