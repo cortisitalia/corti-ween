@@ -150,15 +150,16 @@ body.dark #dark{display:block}
 try{const d=JSON.parse(localStorage.getItem('cortis')||'{}');if(!d.introdone&&location.hash!=='#dev')location.replace('introduzione.html')}catch(e){}
 const HOME_URL="index.html", NEXT_URL="episode4.html";
 const BG={
-  salotto:"https://i.pinimg.com/736x/6e/95/26/6e9526c4d976b37d1ca02422899ebc97.jpg",
-  ingresso:"https://i.pinimg.com/736x/cd/98/5a/cd985a371675930a127dc14c1588b16c.jpg"
+  studio:"https://i.pinimg.com/736x/75/29/25/7529256ccb41c5f00208c9dd1e5e2806.jpg",
+  studioporta:"https://i.pinimg.com/736x/22/02/1a/22021ab0bbec72ea757e622f6bfa01cb.jpg",
+  portamano:"https://i.pinimg.com/736x/08/f5/ce/08f5ce9447316e9ac5d1249adfc59827.jpg"
 };
 const svg=b=>'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice">'+b+'</svg>');
-BG.corridoio=svg(`<defs><radialGradient id="l"><stop offset="0" stop-color="#cfe6da" stop-opacity=".95"/><stop offset="1" stop-color="#cfe6da" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" fill="#0b100e"/><polygon points="0,0 60,28 100,28 160,0" fill="#22332b"/><polygon points="0,90 60,62 100,62 160,90" fill="#2a3a32"/><polygon points="0,0 60,28 60,62 0,90" fill="#33473d"/><polygon points="160,0 100,28 100,62 160,90" fill="#2b3d34"/><rect x="60" y="28" width="40" height="34" fill="#020403"/><ellipse cx="80" cy="45" rx="34" ry="24" fill="url(#l)"/><g fill="#5a3b26" stroke="#9a7048" stroke-width=".7"><polygon points="8,16 20,25 20,62 8,76"/><polygon points="30,28 40,33 40,56 30,62"/><polygon points="152,16 140,25 140,62 152,76"/></g><polygon points="130,28 120,33 120,56 130,62" fill="#000" stroke="#c4121c" stroke-width=".6"/><polygon points="68,62 92,62 120,90 40,90" fill="#8a1a26" opacity=".8"/>`);
-BG.cantina=svg(`<defs><pattern id="b" width="14" height="7" patternUnits="userSpaceOnUse"><rect width="14" height="7" fill="#4a382b"/><path d="M0 0H14M0 3.5H14M7 0V3.5M0 3.5V7" stroke="#150d08" stroke-width=".7" fill="none"/></pattern><radialGradient id="g"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" fill="url(#b)"/><path d="M45 90V38a35 35 0 0 1 70 0V90Z" fill="url(#b)" stroke="#050302" stroke-width="2"/><path d="M45 90V38a35 35 0 0 1 70 0V90Z" fill="#000" opacity=".3"/><g stroke="#cbb9a6" stroke-width=".7" opacity=".7" fill="none"><path d="M62 48l3 26M67 46l3 28M72 50l2 24M88 52l3 24M94 48l3 28M99 52l2 22"/></g><line x1="80" y1="0" x2="80" y2="14" stroke="#222" stroke-width=".6"/><circle cx="80" cy="15" r="2" fill="#ffe2b0"/><ellipse cx="80" cy="20" rx="50" ry="40" fill="url(#g)"/><rect y="78" width="160" height="12" fill="#050403" opacity=".7"/>`);
+BG.corridoio_f=svg(`<defs><radialGradient id="l"><stop offset="0" stop-color="#cfe6da" stop-opacity=".95"/><stop offset="1" stop-color="#cfe6da" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" fill="#0b100e"/><polygon points="0,0 60,28 100,28 160,0" fill="#22332b"/><polygon points="0,90 60,62 100,62 160,90" fill="#2a3a32"/><polygon points="0,0 60,28 60,62 0,90" fill="#33473d"/><polygon points="160,0 100,28 100,62 160,90" fill="#2b3d34"/><rect x="60" y="28" width="40" height="34" fill="#020403"/><ellipse cx="80" cy="45" rx="34" ry="24" fill="url(#l)"/><g fill="#5a3b26" stroke="#9a7048" stroke-width=".7"><polygon points="8,16 20,25 20,62 8,76"/><polygon points="30,28 40,33 40,56 30,62"/><polygon points="152,16 140,25 140,62 152,76"/></g><polygon points="130,28 120,33 120,56 130,62" fill="#000" stroke="#c4121c" stroke-width=".6"/><polygon points="68,62 92,62 120,90 40,90" fill="#8a1a26" opacity=".8"/>`);
+BG.cantina_f=svg(`<defs><pattern id="b" width="14" height="7" patternUnits="userSpaceOnUse"><rect width="14" height="7" fill="#4a382b"/><path d="M0 0H14M0 3.5H14M7 0V3.5M0 3.5V7" stroke="#150d08" stroke-width=".7" fill="none"/></pattern><radialGradient id="g"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" fill="url(#b)"/><path d="M45 90V38a35 35 0 0 1 70 0V90Z" fill="url(#b)" stroke="#050302" stroke-width="2"/><path d="M45 90V38a35 35 0 0 1 70 0V90Z" fill="#000" opacity=".3"/><g stroke="#cbb9a6" stroke-width=".7" opacity=".7" fill="none"><path d="M62 48l3 26M67 46l3 28M72 50l2 24M88 52l3 24M94 48l3 28M99 52l2 22"/></g><line x1="80" y1="0" x2="80" y2="14" stroke="#222" stroke-width=".6"/><circle cx="80" cy="15" r="2" fill="#ffe2b0"/><ellipse cx="80" cy="20" rx="50" ry="40" fill="url(#g)"/><rect y="78" width="160" height="12" fill="#050403" opacity=".7"/>`);
 BG.salotto_f=svg(`<rect width="160" height="90" fill="#27382f"/><rect y="62" width="160" height="28" fill="#3a2a20"/><g fill="#4d675a"><rect x="10" y="12" width="16" height="22"/><rect x="34" y="16" width="14" height="20"/><rect x="112" y="14" width="16" height="22"/><rect x="136" y="10" width="14" height="24"/></g><rect x="60" y="30" width="40" height="32" fill="#0a0f0d" stroke="#6a4a30" stroke-width="2"/><rect x="66" y="48" width="28" height="14" fill="#a43a14" opacity=".8"/><line x1="80" y1="0" x2="80" y2="10" stroke="#777" stroke-width=".5"/><circle cx="80" cy="12" r="3" fill="#e8d9a8"/><ellipse cx="80" cy="16" rx="34" ry="26" fill="#ffe2b0" opacity=".18"/>`);
 BG.ingresso_f=svg(`<rect width="160" height="90" fill="#27382f"/><rect y="72" width="160" height="18" fill="#3a2a20"/><g fill="#4a3426">${[0,1,2,3,4,5].map(i=>`<rect x="${50+i*18}" y="${68-i*9}" width="${110-i*18}" height="${22+i*9}"/>`).join('')}</g><polyline points="50,52 158,2" stroke="#8a6a48" stroke-width="1.5" fill="none"/><rect x="8" y="14" width="22" height="46" fill="#0a0f0d" stroke="#6a4a30" stroke-width="2"/>`);
-BG.studio=svg(`<rect width="160" height="90" fill="#24332c"/><rect y="66" width="160" height="24" fill="#3a2a20"/><rect x="6" y="8" width="42" height="60" fill="#4a3322" stroke="#7a5a3a" stroke-width="1"/><g stroke="#7a5a3a" stroke-width=".8"><line x1="6" y1="24" x2="48" y2="24"/><line x1="6" y1="40" x2="48" y2="40"/><line x1="6" y1="56" x2="48" y2="56"/></g><g fill="#8a7458"><rect x="10" y="12" width="9" height="12"/><rect x="22" y="14" width="8" height="10"/><rect x="34" y="12" width="9" height="12"/><rect x="12" y="28" width="12" height="12"/><rect x="30" y="30" width="10" height="10"/><rect x="10" y="44" width="10" height="12"/><rect x="26" y="46" width="14" height="10"/></g><rect x="70" y="50" width="70" height="6" fill="#6a4a30"/><rect x="74" y="56" width="4" height="22" fill="#4a3322"/><rect x="132" y="56" width="4" height="22" fill="#4a3322"/><line x1="118" y1="38" x2="118" y2="50" stroke="#999" stroke-width=".8"/><circle cx="118" cy="37" r="3" fill="#ffe2b0"/><defs><radialGradient id="lg"><stop offset="0" stop-color="#ffe2b0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe2b0" stop-opacity="0"/></radialGradient></defs><ellipse cx="118" cy="44" rx="34" ry="28" fill="url(#lg)"/>`);
+BG.studio_f=svg(`<rect width="160" height="90" fill="#24332c"/><rect y="66" width="160" height="24" fill="#3a2a20"/><rect x="6" y="8" width="42" height="60" fill="#4a3322" stroke="#7a5a3a" stroke-width="1"/><g stroke="#7a5a3a" stroke-width=".8"><line x1="6" y1="24" x2="48" y2="24"/><line x1="6" y1="40" x2="48" y2="40"/><line x1="6" y1="56" x2="48" y2="56"/></g><g fill="#8a7458"><rect x="10" y="12" width="9" height="12"/><rect x="22" y="14" width="8" height="10"/><rect x="34" y="12" width="9" height="12"/><rect x="12" y="28" width="12" height="12"/><rect x="30" y="30" width="10" height="10"/><rect x="10" y="44" width="10" height="12"/><rect x="26" y="46" width="14" height="10"/></g><rect x="70" y="50" width="70" height="6" fill="#6a4a30"/><rect x="74" y="56" width="4" height="22" fill="#4a3322"/><rect x="132" y="56" width="4" height="22" fill="#4a3322"/><line x1="118" y1="38" x2="118" y2="50" stroke="#999" stroke-width=".8"/><circle cx="118" cy="37" r="3" fill="#ffe2b0"/><defs><radialGradient id="lg"><stop offset="0" stop-color="#ffe2b0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe2b0" stop-opacity="0"/></radialGradient></defs><ellipse cx="118" cy="44" rx="34" ry="28" fill="url(#lg)"/>`);
 const CAST={
   martin:{name:"Martin",img:"foto/martin.png",side:"l",pitch:220},
   james:{name:"James",img:"foto/james.png",side:"r",pitch:260},
@@ -189,7 +190,7 @@ n("Provaste a decifrare il messaggio. Nei dettagli del telefono il mittente era 
 ...(V2[E2]||[]),
 n("Il tavolo vibrò, come se qualcuno avesse bussato da sotto il legno.","thud"),
 
-cd("00:38","Capitolo 2 · Tre colpi","studio","martin","seonghyeon"),
+cd("00:38","Capitolo 2 · Tre colpi","studioporta","martin","seonghyeon"),
 n("Tre colpi alla porta dello studio.","thud"),
 n("Poi una voce."),
 s("voce","«Sono io. Aprite.»"),
@@ -206,7 +207,7 @@ s("keonho","«Qualunque cosa facciate, non aprite.»"),
 n("Ma la voce cambiò.","heart"),
 s("voce","«Martin, lo so che sei lì.»"),
 
-cd("00:38","Capitolo 3 · Sotto la porta","studio","juhoon","james"),
+cd("00:38","Capitolo 3 · Sotto la porta","studioporta","juhoon","james"),
 n("Sotto la porta passava una linea di luce, e nella linea di luce c'erano due piedi."),
 n("Poi quattro.","creak"),
 n("Poi sei."),
@@ -219,7 +220,7 @@ s("voce","«Sono io. Aprite.»"),
 s("juhoon","«Nel van scelsi una parola per scherzo. Se ci perdiamo, la parola è ciliegia.»"),
 n("Se ne ricordarono tutti, di colpo."),
 
-cd("00:38","Capitolo 4 · Il tempo","studio","seonghyeon","keonho"),
+cd("00:38","Capitolo 4 · Il tempo","studioporta","seonghyeon","keonho"),
 ...(E2==="A"?[
  n("Nello studio il silenzio era diventato una cosa fisica."),
  s("keonho","«Una cosa del genere può imitare una voce. Non un ricordo.»"),
@@ -236,7 +237,7 @@ cd("00:38","Capitolo 4 · Il tempo","studio","seonghyeon","keonho"),
 n("L'orologio di Seonghyeon tornò indietro di un minuto. 00:37.","nosig"),
 n("Poi tornò a 00:38. E si fermò."),
 
-cd("00:38","Capitolo 5 · Decisione a tempo","studio","martin","james"),
+cd("00:38","Capitolo 5 · Decisione a tempo","studioporta","martin","james"),
 n("I colpi diventarono più forti. La porta cominciò a tremare nei cardini.","thud"),
 s("martin","«Dobbiamo decidere adesso.»"),
 {w:"n",t:"DECISIONE A TEMPO · Avete venti secondi.",timed:1,ch:[
@@ -261,13 +262,13 @@ B:[
 C:[
  s("tu","«Dimmi la parola che scelse Juhoon nel van.»"),
  n("Silenzio."),
- n("Poi, dall'altra parte, la voce di Juhoon rispose. Era la parola giusta, ma con le sillabe in ordine inverso."),
+ n("Poi, dall'altra parte, la voce di Juhoon rispose. Era la parola giusta, ma con le sillabe in ordine inverso.",null,"portamano"),
  s("voce","«…aigeilic.»","whisper"),
  n("Il vero Juhoon impallidì. Quella cosa conosceva la parola, ma non sapeva dirla.")]
 };
 const TAIL=[
  n("Il bussare cessò. Il silenzio che seguì fu peggiore."),
- n("Quando Juhoon si decise a controllare, sul lato interno della porta, all'altezza degli occhi, c'era un segno: una mano impressa nella polvere."),
+ n("Quando Juhoon si decise a controllare, sul lato interno della porta, all'altezza degli occhi, c'era un segno: una mano impressa nella polvere.",null,"portamano"),
  n("Una mano con sei dita.","sting")
 ];
 
