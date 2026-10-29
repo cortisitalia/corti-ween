@@ -124,6 +124,7 @@ footer{margin-top:80px;font-size:.8rem;color:#4b6258;max-width:60ch}
   body.static #noise{opacity:.3}
   #js .face{opacity:1!important}
 }
+#lang{position:fixed;z-index:80;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.5);border:1px solid var(--dim);color:var(--fg);font:inherit;font-size:.9rem;padding:4px 12px;cursor:pointer;letter-spacing:.08em}
 </style>
 </head>
 <body>
@@ -147,6 +148,7 @@ footer{margin-top:80px;font-size:.8rem;color:#4b6258;max-width:60ch}
 <div class="osd tl rec" id="cam" style="display:none">REC VILLA_CAM_01</div>
 <div class="osd tr" id="clock" style="display:none">23:47</div>
 <div class="osd bl" id="toast" style="display:none"></div>
+<button id="lang" aria-label="Language / Lingua">EN</button>
 <button id="mute" style="display:none" aria-label="Attiva o disattiva l'audio">audio: on</button>
 
 <main id="main">
@@ -181,6 +183,8 @@ footer{margin-top:80px;font-size:.8rem;color:#4b6258;max-width:60ch}
 
 <div id="js" aria-hidden="true"><div class="face" id="face"></div></div>
 
+<script src="en-story.js"></script>
+<script src="lang.js"></script>
 <script>
 /* ====== DA PERSONALIZZARE ===== */
 const JS_IMGS = [   // le 5 foto dei jumpscare (escono in ordine casuale, senza ripetersi finché non sono uscite tutte)
@@ -344,7 +348,7 @@ const fr=$('#frames');let flips=0;
 for(let i=0;i<5;i++){
   const b=document.createElement('button');b.className='ph';b.setAttribute('aria-label','Fotografia '+(i+1)+', girata verso il muro');
   const front=PHOTOS[i]?`<img src="${PHOTOS[i]}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%">`:PHOTO_SVG;
-  b.innerHTML=`<span class="back">foto ${i+1}</span><span class="front">${front}</span>`;
+  b.innerHTML=`<span class="back">${T('foto')} ${i+1}</span><span class="front">${front}</span>`;
   b.onclick=()=>{
     if(b.classList.contains('on'))return;
     b.classList.add('on');burst(.25,.3);flips++;
@@ -357,8 +361,8 @@ for(let i=0;i<5;i++){
 const TXT="23:47. Una villa nel mezzo del bosco. Piove da ore. Sei qui con loro, come staff. Nessuno sa che la casa è abbandonata da 27 anni. Alle 00:00, tutte le uscite si chiudono.";
 function type(){
   const el=$('#typed');
-  if(reduce){el.textContent=TXT;return}
-  let i=0;(function t(){el.textContent=TXT.slice(0,++i);if(i<TXT.length)setTimeout(t,32+Math.random()*50)})();
+  if(reduce){el.textContent=T(TXT);return}
+  let i=0;(function t(){const X=T(TXT);el.textContent=X.slice(0,++i);if(i<X.length)setTimeout(t,32+Math.random()*50)})();
 }
 
 /* --- orologio bloccato --- */
@@ -398,7 +402,7 @@ $('#enter').onclick=()=>{
   channel('CH 04',()=>{
     if(INTRO_URL)location.href=INTRO_URL;
     else if(START_URL)location.href=START_URL;
-    else toast('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO');
+    else toast(T('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO'));
   });
 };
 /* nella lista: Introduzione ed Episodio 1 sono due voci separate */
@@ -408,9 +412,10 @@ const go=e=>{e.preventDefault();const u=e.currentTarget.href;channel('CH 04',()=
 $('#intro').onclick=go;
 /* tutti gli episodi sono nella lista, ma si aprono solo dopo l'introduzione */
 ['#ep1','#ep2','#ep3','#ep4','#ep5'].forEach(s=>{const a=$(s);if(!D.introdone)a.parentElement.classList.add('lock');
-  a.onclick=e=>{if(D.introdone)return go(e);e.preventDefault();toast("GUARDA PRIMA L'INTRODUZIONE")}});
-const F=D.finali||[];$('#fcount').textContent='Finali scoperti: '+F.length+' su 5';
+  a.onclick=e=>{if(D.introdone)return go(e);e.preventDefault();toast(T("GUARDA PRIMA L'INTRODUZIONE"))}});
+const F=D.finali||[];$('#fcount').textContent=T('Finali scoperti: N su 5').replace('N',F.length);
 document.querySelectorAll('.ends span').forEach((s,i)=>{if(F.includes(i+1)){s.textContent=i+1;s.style.color='#e8fff2';s.style.borderColor='#c4121c';s.style.cursor='pointer';s.onclick=()=>location.href='finali.html?f='+(i+1)}});
+window.onLang=()=>{$('#fcount').textContent=T('Finali scoperti: N su 5').replace('N',F.length);if($('#main').classList.contains('on'))$('#typed').textContent=T(TXT);document.querySelectorAll('.ph .back').forEach((e,i)=>e.textContent=T('foto')+' '+(i+1))};
 </script>
 </body>
 </html>

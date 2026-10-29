@@ -37,9 +37,12 @@ h1{font-family:"VT323",monospace;font-weight:400;font-size:clamp(3.2rem,14vw,6re
   <div id="list"></div>
   <div class="btns">
     <a class="btn" href="index.html">Torna all'inizio</a>
+    <button class="btn ghost" id="lang">EN</button>
     <button class="btn ghost" id="again">Rigioca con scelte diverse</button>
   </div>
 </main>
+<script src="en-story.js"></script>
+<script src="lang.js"></script>
 <script>
 const ENDS=[
  ["ALL FIVE","Finale migliore","Tutti riescono a uscire. La casa scompare nella nebbia e, per la prima volta, i ragazzi ridono davvero. Ma quando controlli il telefono, trovi una nuova fotografia scattata dall'interno della villa. Qualcuno è ancora lì."],
@@ -50,10 +53,13 @@ const ENDS=[
 const $=q=>document.querySelector(q);
 let D={};try{D=JSON.parse(localStorage.getItem('cortis')||'{}')}catch(e){}
 const F=D.finali||[],cur=+new URLSearchParams(location.search).get('f')||0;
-$('#cnt').textContent='Finali scoperti: '+F.length+' su 5';
+function draw(){
+$('#cnt').textContent=T('Finali scoperti: N su 5').replace('N',F.length);
 $('#list').innerHTML=ENDS.map((e,i)=>{const n=i+1,ok=F.includes(n)||n===cur;
- return ok?`<div class="end${n===cur?' new':''}"><span class="n">FINALE ${n}</span><h2>${e[0]}</h2><p>${e[2]}</p></div>`
- :`<div class="end lock"><span class="n">FINALE ${n}</span><h2>? ? ?</h2><p>Non l'hai ancora scoperto.</p></div>`}).join('');
+ return ok?`<div class="end${n===cur?' new':''}"><span class="n">${T('FINALE (n)').replace('(n)',n)}</span><h2>${e[0]}</h2><p>${T(e[2])}</p></div>`
+ :`<div class="end lock"><span class="n">${T('FINALE (n)').replace('(n)',n)}</span><h2>? ? ?</h2><p>${T("Non l'hai ancora scoperto.")}</p></div>`}).join('');
+}
+draw();window.onLang=draw;
 $('#again').onclick=()=>{try{const k={introdone:D.introdone,finali:D.finali};localStorage.setItem('cortis',JSON.stringify(k))}catch(e){}location.href='episode1.html'};
 const cv=$('#noise'),cx=cv.getContext('2d');cv.width=200;cv.height=120;const im=cx.createImageData(200,120);let last=0;
 (function loop(t){if(t-last>70){const d=im.data;for(let i=0;i<d.length;i+=4){d[i]=d[i+1]=d[i+2]=Math.random()*255;d[i+3]=255}cx.putImageData(im,0,0);last=t}requestAnimationFrame(loop)})(0);

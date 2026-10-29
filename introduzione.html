@@ -159,6 +159,7 @@ body.dark #dark{display:block}
   <a href="#" id="home">esci</a>
   <button id="back">‹ indietro</button>
   <button id="skip">salta ››</button>
+  <button id="lang">EN</button>
   <button id="mute" aria-label="Attiva o disattiva l'audio">audio: on</button>
 </div>
 
@@ -174,6 +175,8 @@ body.dark #dark{display:block}
 <div id="flash"></div>
 <div id="scare" aria-hidden="true"></div>
 
+<script src="en-story.js"></script>
+<script src="lang.js"></script>
 <script>
 /* ====== DA PERSONALIZZARE ===== */
 const HOME_URL = "index.html";   // pagina principale del sito (link "esci")
@@ -531,22 +534,22 @@ function render(i,fwd){
   const L=S[i];idx=i;applyState(i);setScene(i);
   if(L.card){
     box.classList.add('hide');cardEl.classList.add('on');
-    $('#ct').textContent=L.time;$('#cs').textContent=L.sub;
+    $('#ct').textContent=T(L.time);$('#cs').textContent=T(L.sub);
     clearStage();clearTimeout(timer);typing=false;
     if(fwd)staticBlip();
     return;
   }
   cardEl.classList.remove('on');box.classList.remove('hide');
   box.className=L.w;
-  nameEl.textContent=CAST[L.w]?CAST[L.w].name.toUpperCase():(NAMES[L.w]||'');
+  nameEl.textContent=CAST[L.w]?CAST[L.w].name.toUpperCase():T(NAMES[L.w]||'');
   if(CAST[L.w])stageFor(L.w,true);
   else if(L.w==='n'){const m=L.t.match(/^(Martin|James|Juhoon|Seonghyeon|Keonho)\b/);stageFor(m?m[1].toLowerCase():null,false)}
   else stageFor(null);
   if(fwd){
-    typeText(L.t,CAST[L.w]?CAST[L.w].pitch:(L.w==='tu'?330:L.w==='voce'?70:0),L.w==='voce'?'sawtooth':'square');
+    typeText(T(L.t),CAST[L.w]?CAST[L.w].pitch:(L.w==='tu'?330:L.w==='voce'?70:0),L.w==='voce'?'sawtooth':'square');
     if(L.fx&&FX[L.fx])FX[L.fx]();
   }else{
-    clearTimeout(timer);typing=false;full=L.t;txt.textContent=L.t;arrow.classList.add('on');
+    clearTimeout(timer);typing=false;full=T(L.t);txt.textContent=full;arrow.classList.add('on');
   }
 }
 function next(){
@@ -571,7 +574,7 @@ function goEpisode(){
   $('#ch').textContent='CH 06';staticBlip();
   setTimeout(()=>{
     if(START_URL)location.href=START_URL;
-    else toast('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO');
+    else toast(T('SEGNALE ASSENTE · EPISODIO 1 NON ANCORA TRASMESSO'));
   },380);
 }
 
