@@ -150,11 +150,16 @@ try{const d=JSON.parse(localStorage.getItem('cortis')||'{}');if(!d.introdone&&lo
 const HOME_URL="index.html", NEXT_URL="episode2.html";
 const BG={
   salotto:"https://i.pinimg.com/736x/6e/95/26/6e9526c4d976b37d1ca02422899ebc97.jpg",
-  ingresso:"https://i.pinimg.com/736x/cd/98/5a/cd985a371675930a127dc14c1588b16c.jpg"
+  salonefoto:"https://i.pinimg.com/1200x/51/5a/f3/515af3c61f0f68cb4ef69c0f9e44a9b9.jpg",
+  corridoio:"https://i.pinimg.com/736x/7c/12/d0/7c12d00e0145429c98f56984c7eef05a.jpg",
+  scale:"https://i.pinimg.com/1200x/dd/52/d4/dd52d44a0ee6bd97b0aff38ee27c1e96.jpg",
+  sopra:"https://i.pinimg.com/736x/10/fd/7b/10fd7b48aab70cf3e587cd52f9bdb1aa.jpg",
+  cantina:"https://i.pinimg.com/1200x/32/15/32/321532f839456059dec74a3e64d11155.jpg",
+  salonetel:"https://i.pinimg.com/1200x/e5/3c/b3/e53cb3babe829298adbe9e515bda5ab3.jpg"
 };
 const svg=b=>'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice">'+b+'</svg>');
-BG.corridoio=svg(`<defs><radialGradient id="l"><stop offset="0" stop-color="#cfe6da" stop-opacity=".95"/><stop offset="1" stop-color="#cfe6da" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" fill="#0b100e"/><polygon points="0,0 60,28 100,28 160,0" fill="#22332b"/><polygon points="0,90 60,62 100,62 160,90" fill="#2a3a32"/><polygon points="0,0 60,28 60,62 0,90" fill="#33473d"/><polygon points="160,0 100,28 100,62 160,90" fill="#2b3d34"/><rect x="60" y="28" width="40" height="34" fill="#020403"/><ellipse cx="80" cy="45" rx="34" ry="24" fill="url(#l)"/><g fill="#5a3b26" stroke="#9a7048" stroke-width=".7"><polygon points="8,16 20,25 20,62 8,76"/><polygon points="30,28 40,33 40,56 30,62"/><polygon points="152,16 140,25 140,62 152,76"/></g><polygon points="130,28 120,33 120,56 130,62" fill="#000" stroke="#c4121c" stroke-width=".6"/><polygon points="68,62 92,62 120,90 40,90" fill="#8a1a26" opacity=".8"/>`);
-BG.cantina=svg(`<defs><pattern id="b" width="14" height="7" patternUnits="userSpaceOnUse"><rect width="14" height="7" fill="#4a382b"/><path d="M0 0H14M0 3.5H14M7 0V3.5M0 3.5V7" stroke="#150d08" stroke-width=".7" fill="none"/></pattern><radialGradient id="g"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" fill="url(#b)"/><path d="M45 90V38a35 35 0 0 1 70 0V90Z" fill="url(#b)" stroke="#050302" stroke-width="2"/><path d="M45 90V38a35 35 0 0 1 70 0V90Z" fill="#000" opacity=".3"/><g stroke="#cbb9a6" stroke-width=".7" opacity=".7" fill="none"><path d="M62 48l3 26M67 46l3 28M72 50l2 24M88 52l3 24M94 48l3 28M99 52l2 22"/></g><line x1="80" y1="0" x2="80" y2="14" stroke="#222" stroke-width=".6"/><circle cx="80" cy="15" r="2" fill="#ffe2b0"/><ellipse cx="80" cy="20" rx="50" ry="40" fill="url(#g)"/><rect y="78" width="160" height="12" fill="#050403" opacity=".7"/>`);
+BG.corridoio_f=svg(`<defs><radialGradient id="l"><stop offset="0" stop-color="#cfe6da" stop-opacity=".95"/><stop offset="1" stop-color="#cfe6da" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" fill="#0b100e"/><polygon points="0,0 60,28 100,28 160,0" fill="#22332b"/><polygon points="0,90 60,62 100,62 160,90" fill="#2a3a32"/><polygon points="0,0 60,28 60,62 0,90" fill="#33473d"/><polygon points="160,0 100,28 100,62 160,90" fill="#2b3d34"/><rect x="60" y="28" width="40" height="34" fill="#020403"/><ellipse cx="80" cy="45" rx="34" ry="24" fill="url(#l)"/><g fill="#5a3b26" stroke="#9a7048" stroke-width=".7"><polygon points="8,16 20,25 20,62 8,76"/><polygon points="30,28 40,33 40,56 30,62"/><polygon points="152,16 140,25 140,62 152,76"/></g><polygon points="130,28 120,33 120,56 130,62" fill="#000" stroke="#c4121c" stroke-width=".6"/><polygon points="68,62 92,62 120,90 40,90" fill="#8a1a26" opacity=".8"/>`);
+BG.cantina_f=svg(`<defs><pattern id="b" width="14" height="7" patternUnits="userSpaceOnUse"><rect width="14" height="7" fill="#4a382b"/><path d="M0 0H14M0 3.5H14M7 0V3.5M0 3.5V7" stroke="#150d08" stroke-width=".7" fill="none"/></pattern><radialGradient id="g"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".8"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient></defs><rect width="160" height="90" fill="url(#b)"/><path d="M45 90V38a35 35 0 0 1 70 0V90Z" fill="url(#b)" stroke="#050302" stroke-width="2"/><path d="M45 90V38a35 35 0 0 1 70 0V90Z" fill="#000" opacity=".3"/><g stroke="#cbb9a6" stroke-width=".7" opacity=".7" fill="none"><path d="M62 48l3 26M67 46l3 28M72 50l2 24M88 52l3 24M94 48l3 28M99 52l2 22"/></g><line x1="80" y1="0" x2="80" y2="14" stroke="#222" stroke-width=".6"/><circle cx="80" cy="15" r="2" fill="#ffe2b0"/><ellipse cx="80" cy="20" rx="50" ry="40" fill="url(#g)"/><rect y="78" width="160" height="12" fill="#050403" opacity=".7"/>`);
 BG.salotto_f=svg(`<rect width="160" height="90" fill="#27382f"/><rect y="62" width="160" height="28" fill="#3a2a20"/><g fill="#4d675a"><rect x="10" y="12" width="16" height="22"/><rect x="34" y="16" width="14" height="20"/><rect x="112" y="14" width="16" height="22"/><rect x="136" y="10" width="14" height="24"/></g><rect x="60" y="30" width="40" height="32" fill="#0a0f0d" stroke="#6a4a30" stroke-width="2"/><rect x="66" y="48" width="28" height="14" fill="#a43a14" opacity=".8"/><line x1="80" y1="0" x2="80" y2="10" stroke="#777" stroke-width=".5"/><circle cx="80" cy="12" r="3" fill="#e8d9a8"/><ellipse cx="80" cy="16" rx="34" ry="26" fill="#ffe2b0" opacity=".18"/>`);
 BG.ingresso_f=svg(`<rect width="160" height="90" fill="#27382f"/><rect y="72" width="160" height="18" fill="#3a2a20"/><g fill="#4a3426">${[0,1,2,3,4,5].map(i=>`<rect x="${50+i*18}" y="${68-i*9}" width="${110-i*18}" height="${22+i*9}"/>`).join('')}</g><polyline points="50,52 158,2" stroke="#8a6a48" stroke-width="1.5" fill="none"/><rect x="8" y="14" width="22" height="46" fill="#0a0f0d" stroke="#6a4a30" stroke-width="2"/>`);
 const CAST={
@@ -168,7 +173,7 @@ const n=(t,fx,bg)=>({w:"n",t,fx,bg}),s=(w,t,fx)=>({w,t,fx}),cd=(time,sub,bg,l,r)
 
 /* ====== EPISODIO 1 · 5 CAPITOLI ====== */
 const S=[
-cd("00:00","Capitolo 1 · Benvenuti a casa","salotto","martin","seonghyeon"),
+cd("00:00","Capitolo 1 · Benvenuti a casa","salonefoto","martin","seonghyeon"),
 n("Il lampadario oscillava ancora sopra di voi.","creak"),
 n("Nessuno riusciva a staccare gli occhi dalla fotografia. Dalla figura scura dietro di voi. Dal volto che era il tuo.","heart"),
 s("tu","«Non sono io. Non può essere io.»"),
@@ -202,7 +207,7 @@ n("Poi scosse la testa, come per cacciare un pensiero."),
 s("keonho","«Lasciate stare. Sono stanco.»"),
 n("Seonghyeon lo osservò più a lungo del necessario."),
 
-cd("00:15","Capitolo 3 · I passi","ingresso","juhoon","james"),
+cd("00:15","Capitolo 3 · I passi","scale","juhoon","james"),
 n("Dall'alto arrivò di nuovo il rumore.","steps"),
 n("Qualcuno correva."),
 n("Questa volta non si fermò sul bordo. Percorse tutto il corridoio, tornò indietro, poi ancora. Come chi aspetta e sta perdendo la pazienza.","steps"),
@@ -215,7 +220,7 @@ n("Il primo gradino scricchiolò sotto il suo peso.","creak"),
 n("Era bagnato.","drip"),
 n("Come se qualcuno ci fosse passato un attimo prima."),
 
-cd("00:21","Capitolo 4 · Il buio","ingresso","martin","seonghyeon"),
+cd("00:21","Capitolo 4 · Il buio","scale","martin","seonghyeon"),
 n("Le luci si spensero.","blackout"),
 n("Nel buio, qualcuno sussurrò un nome.","whisper"),
 n("«Martin.»","whisper"),
@@ -249,7 +254,7 @@ s("juhoon","«Decidiamo adesso. Insieme.»"),
 
 const BR={
 A:[
- n("Salite. Martin davanti, James subito dietro, perché non vuole lasciarlo solo.","steps","corridoio"),
+ n("Salite. Martin davanti, James subito dietro, perché non vuole lasciarlo solo.","steps","sopra"),
  n("Il corridoio è vuoto. Ogni porta si apre su una stanza spoglia, senza mobili, con la polvere intatta.","creak"),
  n("Nessuno è passato di qui da anni."),
  s("martin","«Allora chi mi ha chiamato?»"),
@@ -262,7 +267,7 @@ B:[
  n("Le unghie hanno lasciato solchi nell'intonaco. Troppi per contarli.","scratch")],
 C:[
  s("seonghyeon","«Pronto?»"),
- n("Dalla cornetta arriva un respiro lento.","breath"),
+ n("Dalla cornetta arriva un respiro lento.","breath","salonetel"),
  n("Poi una voce molto bassa, quasi gentile.","whisper"),
  s("voce","«Non siete soli.»"),
  n("Click. La linea cade. Il cavo, sul tavolino, è ancora tagliato.","click")]
